@@ -23,18 +23,18 @@ module Taptag
         to_a[val]
       end
 
-      def reset(arry=Array.new(255, 0))
-        arry ||= Array.new(255,0)
+      def reset(arry = Array.new(255, 0))
+        arry ||= Array.new(255, 0)
         ry = Array.new(255, 0)
                   .map
-                  .with_index { |i, x| i = arry[x] || 0 }
+                  .with_index { |_i, x| i = arry[x] || 0 }
 
         to_ptr.write_array_of_uint8(ry)
-        
+
         self
       end
 
-      alias_method :set, :reset
+      alias set reset
 
       def nonzero_length
         to_a.reject(&:zero?).length

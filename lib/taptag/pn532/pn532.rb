@@ -1,4 +1,5 @@
 module Taptag
+  # Encapsulates the C Library functions
   module PN532
     extend FFI::Library
 
