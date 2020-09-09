@@ -26,6 +26,28 @@ module Taptag
         buffer[0...resp]
       end
 
+      ### Mifare methods ###
+
+      # Authenticates rw access to a block
+      def auth_mifare_block(blk, cuid = nil, key = PN532::MIFARE_DEFAULT_KEY)
+        cuid ||= card_uid
+
+        raise IOError, "Can't find card" unless cuid
+
+        uid = PN532::DataBuffer.new.set(cuid)
+
+        resp = PN532.mifare_authenticate_block(
+          pn_struct,
+          uid,
+          uid.nonzero_length,
+          blk,
+          PN532::MIFARE_CMD_AUTH_A,
+          key
+        )
+
+        check_error(resp)
+      end
+
       private
 
       # Initializes and memoizes a PN532Struct for device control
