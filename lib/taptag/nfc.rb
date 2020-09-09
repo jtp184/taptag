@@ -86,6 +86,12 @@ module Taptag
         end
       end
 
+      # Takes in a 2D array of +blocks+, of format [blk_num, data[]], a default +cuid+,
+      # and the default +key+ to write multiple blocks on the card
+      def write_mifare_card(blocks, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)
+        blocks.each { |blk, data| write_mifare_block(blk, data, cuid, key) }
+      end
+
       private
 
       # Initializes and memoizes a PN532Struct for device control
