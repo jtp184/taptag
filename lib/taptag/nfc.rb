@@ -92,6 +92,21 @@ module Taptag
         blocks.each { |blk, data| write_mifare_block(blk, data, cuid, key) }
       end
 
+      ### NTag methods ###
+
+      # Reads the +blk+ off of the card
+      def read_ntag_block(blk)
+        buffer = PN532::DataBuffer.new
+
+        PN532.read_ntag_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        buffer.to_a
+      end
+
       private
 
       # Initializes and memoizes a PN532Struct for device control
