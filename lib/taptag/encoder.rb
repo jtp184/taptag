@@ -1,6 +1,16 @@
 module Taptag
   # Handles translating messages to byte frames for writing to devices
   class Encoder
+    attr_accessor :encryption
+
+    def initialize(crypt = nil)
+      @encryption = crypt || :itself.to_proc
+    end
+
+    def call(str)
+      self.class.call(encryption.call(str))
+    end
+
     class << self
       # Master input function, takes in +input+ and optional values for +fmt+ and +blk_filter+
       # and can turn strings into 2d write arrays, 2d arrays into strings,
