@@ -29,11 +29,7 @@ module Taptag
       ### Mifare methods ###
 
       # Authenticates rw access to a block
-      def auth_mifare_block(blk, cuid = nil, key = PN532::MIFARE_DEFAULT_KEY)
-        cuid ||= card_uid
-
-        raise IOError, "Can't find card" unless cuid
-
+      def auth_mifare_block(blk, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)
         uid = PN532::DataBuffer.new.set(cuid)
 
         resp = PN532.mifare_authenticate_block(
@@ -48,8 +44,8 @@ module Taptag
         check_error(resp)
       end
 
-      # Reads the data in block +blk+
-      def read_mifare_block(blk, auth = auth_mifare_block(blk))
+      # Reads the data in block +blk+, preauth is automatically done with +_auth+
+      def read_mifare_block(blk, _auth = auth_mifare_block(blk))
         buffer = PN532::DataBuffer.new
 
         resp = PN532.mifare_read_block(
@@ -60,6 +56,20 @@ module Taptag
 
         check_error(resp)
         buffer[0...16]
+      end
+
+      # Writes the +data+ provided to the +blk+ authorizing by default with +_auth+
+      def write_mifare_block(blk, data, _auth = auth_mifare_block(blk))
+        buffer = PN532::DataBuffer.new.set(data)
+
+        resp = PN532.mifare_write_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        check_error(resp)
+        [blk, data]
       end
 
       private
