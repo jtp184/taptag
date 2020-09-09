@@ -65,6 +65,7 @@ module Taptag
 
       private
 
+      # Takes in an +arg+, allowing for symbols to stand in
       def blk_length(arg)
         case arg
         when :mifare
@@ -76,6 +77,7 @@ module Taptag
         end
       end
 
+      # Takes in an +arry+ and determines whether it is a [1, n] length array
       def identify_2d_array(arry)
         arry.all? { |x| x.is_a?(Array) } &&
           arry.all? { |x| x.length == 2 } &&
