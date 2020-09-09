@@ -1,5 +1,5 @@
 module Taptag
-  module PN352
+  module PN532
     @@lib_constants = {
       COMMAND_DIAGNOSE: 0x00,
       COMMAND_GETFIRMWAREVERSION: 0x02,
