@@ -2,6 +2,9 @@ module Taptag
   # Handles translating messages to byte frames for writing to devices
   class Encoder
     class << self
+      # Master input function, takes in +input+ and optional values for +fmt+ and +blk_filter+
+      # and can turn strings into 2d write arrays, 2d arrays into strings,
+      # and 1D arrays into 2d arrays
       def call(input, fmt = :mifare, blk_filter = writable_mifare_blocks)
         if input.is_a?(String)
           zip_blocks(slice_string(encode_string(input), fmt))
