@@ -20,6 +20,10 @@ module Taptag
                     %i[pointer pointer uint16], :int, blocking: true
     attach_function :mifare_write_block, :PN532_MifareClassicWriteBlock,
                     %i[pointer pointer uint16], :int, blocking: true
+    attach_function :ntag_read_block, :PN532_Ntag2xxReadBlock,
+                    %i[pointer pointer uint16]
+    attach_function :ntag_write_block, :PN532_Ntag2xxWriteBlock,
+                    %i[pointer pointer uint16]
 
     ffi_lib 'pn532_rpi'
     attach_function :spi_init, :PN532_SPI_Init,
