@@ -38,6 +38,18 @@ module Taptag
 
         @pn_struct
       end
+
+      # Guards against error by confirming a 0 response
+      def check_error(resp)
+        if resp != PN532::ERROR_NONE
+          err = PN532.lib_constants
+                     .select { |x, y| x.to_s.downcase =~ /error/ }
+                     .key(resp)
+          raise IOError, "PN532 Error (#{err || resp})"
+        else
+          resp
+        end
+      end
     end
   end
 end
