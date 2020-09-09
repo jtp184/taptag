@@ -26,14 +26,7 @@ module Taptag
 
       # Takes the +str+ and splits it into +blks+ frames with some shorthand
       def slice_string(str, blks)
-        bloks = case blks
-                when :mifare
-                  16
-                when :ntag
-                  4
-                when ->(b) { b.is_a?(Integer) }
-                  blks
-                end
+        bloks = blk_length(blks)
 
         frames = str.each_slice(bloks).to_a
         frames.last << 0 until frames.last.length == bloks
@@ -51,10 +44,18 @@ module Taptag
         end
       end
 
+      # Takes in the +blks+ and uses the +filter to label the frames
       def zip_blocks(blks, filter = writable_mifare_blocks)
         filter.map
               .with_index { |i, x| [i, blks[x]] }
               .reject { |_a, b| b.nil? }
+      end
+
+      # Takes in the +filter+ and zips it with blank blocks
+      def blank_blocks(filter = writable_mifare_blocks, blks = Array.new(16, 0))
+        filter.map do |x|
+          [x, blks]
+        end
       end
 
       # Returns just the write safe blocks for mifare
@@ -63,6 +64,17 @@ module Taptag
       end
 
       private
+
+      def blk_length(arg)
+        case arg
+        when :mifare
+          16
+        when :ntag
+          4
+        when ->(b) { b.is_a?(Integer) }
+          arg
+        end
+      end
 
       def identify_2d_array(arry)
         arry.all? { |x| x.is_a?(Array) } &&
