@@ -26,6 +26,16 @@ module Taptag
         buffer[0...resp]
       end
 
+      # Detect card format through uid length
+      def card_format(cuid = card_uid)
+        case cuid.length
+        when PN532::MIFARE_UID_SINGLE_LENGTH
+          :mifare
+        when PN532::MIFARE_UID_DOUBLE_LENGTH
+          :ntag
+        end
+      end
+
       ### Mifare methods ###
 
       # Authenticates rw access to a block
