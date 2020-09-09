@@ -106,8 +106,7 @@ module Taptag
 
         check_error(resp) do |err, rs|
           if err == :ERROR_CONTEXT
-            card_uid
-            read_ntag_block(blk)
+            card_uid && read_ntag_block(blk)
           else
             check_error(rs)
           end
