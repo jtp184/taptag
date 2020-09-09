@@ -76,12 +76,9 @@ module Taptag
       def read_mifare_card(rng = 0...PN532::MIFARE_BLOCK_COUNT, cuid = card_uid)
         rng.map do |x|
           begin
-            read_mifare_block(
-              x,
-              auth_mifare_block(x, cuid)
-            )
+            [x, read_mifare_block(x, auth_mifare_block(x, cuid))]
           rescue IOError
-            nil
+            [x, nil]
           end
         end
       end
@@ -113,6 +110,30 @@ module Taptag
         card_uid
         sleep 1
         read_ntag_block(blk)
+      end
+
+      # Writes the +data+ to the +blk+
+      def write_ntag_block(blk, data)
+        buffer = PN532::DataBuffer.new.set(data)
+
+        PN532.ntag_write_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        [blk, data]
+      end
+
+      # Reads the blocks in +rng off of the card into a 2D Array
+      def read_ntag_card(rng = 0...PN532::NTAG2XX_BLOCK_COUNT)
+        rng.map do |x|
+          begin
+            [x, read_ntag_block(x)]
+          rescue IOError
+            [x, nil]
+          end
+        end
       end
 
       private
