@@ -116,11 +116,13 @@ module Taptag
       def write_ntag_block(blk, data)
         buffer = PN532::DataBuffer.new.set(data)
 
-        PN532.ntag_write_block(
+        resp = PN532.ntag_write_block(
           pn_struct,
           buffer,
           blk
         )
+
+        check_error(resp)
 
         [blk, data]
       end
