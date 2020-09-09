@@ -15,14 +15,17 @@ module Taptag
     class DataBuffer < FFI::Struct
       layout :buffer, [:uint8, 255]
 
+      # Read the internal array out
       def to_a
         to_ptr.read_array_of_uint8(255)
       end
 
+      # Convert to array, and pass +val+ to it
       def [](val)
         to_a[val]
       end
 
+      # Writes the +arry+ to the buffer
       def reset(arry = Array.new(255, 0))
         arry ||= Array.new(255, 0)
         ry = Array.new(255, 0)
@@ -36,6 +39,7 @@ module Taptag
 
       alias set reset
 
+      # Return the length minus the zeroes
       def nonzero_length
         to_a.reject(&:zero?).length
       end
