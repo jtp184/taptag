@@ -49,7 +49,7 @@ module Taptag
       end
 
       # Reads the data in block +blk+
-      def read_mifare_block(blk)
+      def read_mifare_block(blk, auth = auth_mifare_block(blk))
         buffer = PN532::DataBuffer.new
 
         resp = PN532.mifare_read_block(
@@ -79,9 +79,12 @@ module Taptag
       def check_error(resp)
         if resp != PN532::ERROR_NONE
           err = PN532.lib_constants
-                     .select { |x, y| x.to_s.downcase =~ /error/ }
+                     .select { |x, _y| x.to_s.downcase =~ /error/ }
                      .key(resp)
-          raise IOError, "PN532 Error (#{err || resp})"
+
+          raise IOError, "PN532 Error (#{err || resp})" unless block_given?
+
+          yield err, resp
         else
           resp
         end
