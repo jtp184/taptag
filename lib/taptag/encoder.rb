@@ -15,6 +15,8 @@ module Taptag
         end
       end
 
+      alias [] call
+
       # Takes +str+ and converts the chars to ordinals
       def encode_string(str)
         str.chars.map(&:ord)
