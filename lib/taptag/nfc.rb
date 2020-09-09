@@ -104,8 +104,16 @@ module Taptag
           blk
         )
 
-        check_error(resp)
-        buffer.to_a
+        check_error(resp) do |err, rs|
+          if err == :ERROR_CONTEXT
+            card_uid
+            read_ntag_block(blk)
+          else
+            check_error(rs)
+          end
+        end
+
+        buffer[0...PN532::NTAG2XX_BLOCK_LENGTH]
       end
 
       private
