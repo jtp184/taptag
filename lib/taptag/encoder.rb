@@ -7,6 +7,11 @@ module Taptag
         str.chars.map(&:ord)
       end
 
+      # Takes +bytes+ and converts it back into a string
+      def decode_string(bytes)
+        bytes.map(&:chr).join
+      end
+
       # Takes the +str+ and splits it into +blks+ frames
       def slice_string(str, blks)
         bloks = case blks
