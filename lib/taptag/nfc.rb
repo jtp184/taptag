@@ -107,7 +107,9 @@ module Taptag
         check_error(resp)
 
         buffer[0...PN532::NTAG2XX_BLOCK_LENGTH]
-      rescue IOError
+      rescue IOError => e
+        raise e unless e.message =~ /ERROR_CONTEXT/
+
         card_uid
         sleep 1
         read_ntag_block(blk)
