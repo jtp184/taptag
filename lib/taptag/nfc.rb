@@ -96,7 +96,7 @@ module Taptag
       # Takes in a 2D array of +blocks+, of format [blk_num, data[]], a default +cuid+,
       # and the default +key+ to write multiple blocks on the card
       def write_mifare_card(blocks, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)
-        blocks.each { |blk, data| write_mifare_block(blk, data, cuid, key) }
+        blocks.each { |blk, data| write_mifare_block(data, blk, auth_mifare_block(blk, cuid, key)) }
       end
 
       ### NTag methods ###
