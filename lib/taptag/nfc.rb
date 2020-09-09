@@ -74,9 +74,12 @@ module Taptag
 
       # Reads +cuid+ once, and reads blocks 0..63 off of the card into a 2D Array
       def read_mifare_card(cuid = card_uid)
-        0.upto(63).map do |x|
+        (0...64).map do |x|
           begin
-            read_mifare_block(x, cuid)
+            read_mifare_block(
+              x,
+              auth_mifare_block(x, cuid)
+            )
           rescue IOError
             nil
           end
