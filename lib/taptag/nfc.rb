@@ -55,7 +55,7 @@ module Taptag
         )
 
         check_error(resp)
-        buffer[0...16]
+        buffer[0...PN532::MIFARE_BLOCK_LENGTH]
       end
 
       # Writes the +data+ provided to the +blk+ authorizing by default with +_auth+
@@ -73,15 +73,12 @@ module Taptag
       end
 
       # Reads +cuid+ once, and reads blocks in +rng+ off of the card into a 2D Array
-      def read_mifare_card(rng = 0...64, cuid = card_uid)
+      def read_mifare_card(rng = 0...PN532::MIFARE_BLOCK_COUNT, cuid = card_uid)
         rng.map do |x|
           begin
-            read_mifare_block(
-              x,
-              auth_mifare_block(x, cuid)
-            )
+            [x, read_mifare_block(x, auth_mifare_block(x, cuid))]
           rescue IOError
-            nil
+            [x, nil]
           end
         end
       end
@@ -90,6 +87,55 @@ module Taptag
       # and the default +key+ to write multiple blocks on the card
       def write_mifare_card(blocks, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)
         blocks.each { |blk, data| write_mifare_block(blk, data, cuid, key) }
+      end
+
+      ### NTag methods ###
+
+      # Reads the +blk+ off of the card, guards to prevent an uninitialized card
+      def read_ntag_block(blk)
+        buffer = PN532::DataBuffer.new
+
+        resp = PN532.ntag_read_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        check_error(resp)
+
+        buffer[0...PN532::NTAG2XX_BLOCK_LENGTH]
+      rescue IOError => e
+        raise e unless e.message =~ /ERROR_CONTEXT/
+
+        card_uid
+        sleep 1
+        read_ntag_block(blk)
+      end
+
+      # Writes the +data+ to the +blk+
+      def write_ntag_block(blk, data)
+        buffer = PN532::DataBuffer.new.set(data)
+
+        resp = PN532.ntag_write_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        check_error(resp)
+
+        [blk, data]
+      end
+
+      # Reads the blocks in +rng off of the card into a 2D Array
+      def read_ntag_card(rng = 0...PN532::NTAG2XX_BLOCK_COUNT)
+        rng.map do |x|
+          begin
+            [x, read_ntag_block(x)]
+          rescue IOError
+            [x, nil]
+          end
+        end
       end
 
       private
