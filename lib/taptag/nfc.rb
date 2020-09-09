@@ -94,7 +94,7 @@ module Taptag
 
       ### NTag methods ###
 
-      # Reads the +blk+ off of the card
+      # Reads the +blk+ off of the card, guards to prevent an uninitialized card
       def read_ntag_block(blk)
         buffer = PN532::DataBuffer.new
 
@@ -104,15 +104,13 @@ module Taptag
           blk
         )
 
-        check_error(resp) do |err, rs|
-          if err == :ERROR_CONTEXT
-            card_uid && read_ntag_block(blk)
-          else
-            check_error(rs)
-          end
-        end
+        check_error(resp)
 
         buffer[0...PN532::NTAG2XX_BLOCK_LENGTH]
+      rescue IOError
+        card_uid
+        sleep 1
+        read_ntag_block(blk)
       end
 
       private
