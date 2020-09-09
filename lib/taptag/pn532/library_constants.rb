@@ -145,6 +145,7 @@ module Taptag
       const_set(key, val)
     end
 
+    # Provides access to the constants as a hash
     def self.lib_constants
       @@lib_constants
     end
