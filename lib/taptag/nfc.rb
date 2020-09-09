@@ -48,6 +48,20 @@ module Taptag
         check_error(resp)
       end
 
+      # Reads the data in block +blk+
+      def read_mifare_block(blk)
+        buffer = PN532::DataBuffer.new
+
+        resp = PN532.mifare_read_block(
+          pn_struct,
+          buffer,
+          blk
+        )
+
+        check_error(resp)
+        buffer[0...16]
+      end
+
       private
 
       # Initializes and memoizes a PN532Struct for device control
