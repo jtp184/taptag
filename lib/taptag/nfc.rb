@@ -98,7 +98,7 @@ module Taptag
       def read_ntag_block(blk)
         buffer = PN532::DataBuffer.new
 
-        PN532.read_ntag_block(
+        PN532.ntag_read_block(
           pn_struct,
           buffer,
           blk
