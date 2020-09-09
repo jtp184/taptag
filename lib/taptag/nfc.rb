@@ -55,7 +55,7 @@ module Taptag
         )
 
         check_error(resp)
-        buffer[0...PN532::MIFARE_BLOCK_COUNT]
+        buffer[0...PN532::MIFARE_BLOCK_LENGTH]
       end
 
       # Writes the +data+ provided to the +blk+ authorizing by default with +_auth+
