@@ -6,7 +6,7 @@ module Taptag
         if input.is_a?(String)
           zip_blocks(slice_string(encode_string(input), fmt))
         elsif identify_2d_array(input)
-          reduce_blocks(input, blk_filter)
+          decode_string reduce_blocks(input, blk_filter)
         elsif input.is_a?(Array)
           slice_string(input, fmt)
         end
@@ -19,8 +19,8 @@ module Taptag
 
       # Takes +bytes+ and converts it back into a string
       def decode_string(bytes)
-        bytes.map(&:chr)
-             .reject(&:zero?)
+        bytes.reject(&:zero?)
+             .map(&:chr)
              .join
       end
 
