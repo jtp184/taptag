@@ -72,6 +72,17 @@ module Taptag
         [blk, data]
       end
 
+      # Reads +cuid+ once, and reads blocks 0..63 off of the card into a 2D Array
+      def read_mifare_card(cuid = card_uid)
+        0.upto(63).map do |x|
+          begin
+            read_mifare_block(x, cuid)
+          rescue IOError
+            nil
+          end
+        end
+      end
+
       private
 
       # Initializes and memoizes a PN532Struct for device control
