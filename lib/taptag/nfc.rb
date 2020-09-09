@@ -1,6 +1,12 @@
 module Taptag
   module NFC
     class << self
+      def firmware_version
+        buffer = PN532::DataBuffer.new
+        PN532.get_firmware_version(pn_struct, buffer)
+        buffer[1..3]
+      end
+
       private
 
       def pn_struct
