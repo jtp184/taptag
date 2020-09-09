@@ -1,13 +1,17 @@
 require 'openssl'
 
 module Taptag
+  # Handles encrypting and decrypting data using OpenSSL algorithms
   class Encrypter
+    # String used to instantiate the Cipher instance
     attr_accessor :algorithm
 
+    # Uses the +algo+ provided, or 'AES-128-CBC' by default
     def initialize(algo = 'AES-128-CBC')
       @algorithm = algo
     end
 
+    # Takes in a string +str+ and returns a hash with the key, vector, and encrypted data
     def encrypt(str)
       ec = OpenSSL::Cipher.new(algorithm)
       ec.encrypt
@@ -19,6 +23,7 @@ module Taptag
       { key: key, vector: vector, data: data }
     end
 
+    # Takes in +args+ for the key, vector, and data, and returns the decrypted string
     def decrypt(args = {})
       dc = OpenSSL::Cipher.new(algorithm)
       dc.decrypt
