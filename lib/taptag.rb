@@ -5,6 +5,7 @@ require 'taptag/pn532/library_constants'
 require 'taptag/pn532/pn532'
 require 'taptag/nfc'
 require 'taptag/encoder'
+require 'taptag/encrypter'
 
 # Ruby gem for controlling the Waveshare PN532 NFC HAT
 module Taptag
