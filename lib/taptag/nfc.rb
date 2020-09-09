@@ -55,7 +55,7 @@ module Taptag
         )
 
         check_error(resp)
-        buffer[0...16]
+        buffer[0...PN532::MIFARE_BLOCK_COUNT]
       end
 
       # Writes the +data+ provided to the +blk+ authorizing by default with +_auth+
@@ -73,7 +73,7 @@ module Taptag
       end
 
       # Reads +cuid+ once, and reads blocks in +rng+ off of the card into a 2D Array
-      def read_mifare_card(rng = 0...64, cuid = card_uid)
+      def read_mifare_card(rng = 0...PN532::MIFARE_BLOCK_COUNT, cuid = card_uid)
         rng.map do |x|
           begin
             read_mifare_block(
