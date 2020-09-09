@@ -26,6 +26,16 @@ module Taptag
         buffer[0...resp]
       end
 
+      # Detect card format through uid length
+      def card_format(cuid = card_uid)
+        case cuid.length
+        when PN532::MIFARE_UID_SINGLE_LENGTH
+          :mifare
+        when PN532::MIFARE_UID_DOUBLE_LENGTH
+          :ntag
+        end
+      end
+
       ### Mifare methods ###
 
       # Authenticates rw access to a block
@@ -86,7 +96,7 @@ module Taptag
       # Takes in a 2D array of +blocks+, of format [blk_num, data[]], a default +cuid+,
       # and the default +key+ to write multiple blocks on the card
       def write_mifare_card(blocks, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)
-        blocks.each { |blk, data| write_mifare_block(blk, data, cuid, key) }
+        blocks.each { |blk, data| write_mifare_block(blk, data, auth_mifare_block(blk, cuid, key)) }
       end
 
       ### NTag methods ###
