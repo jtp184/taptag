@@ -1,0 +1,145 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/inline'
+require 'optparse'
+
+gemfile do
+  source 'https://rubygems.org/'
+
+  gem 'colorize'
+  gem 'tty-prompt'
+  gem 'net-ssh'
+end
+
+# Set up the prompt for user input
+prompt = TTY::Prompt.new(
+  interrupt: -> { puts 'x'.light_black; puts 'Goodbye'.red; abort }
+)
+
+@flags = Hash.new(false)
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: install_deps [options]'
+
+  opts.on('-v', '--[no-]verbose', 'Print output of commands') do |v|
+    @flags[:verbose] = v
+  end
+end.parse!
+
+@durationizer = proc do |var|
+  secs  = var.to_int
+  mins  = secs / 60
+  hours = mins / 60
+  days  = hours / 24
+
+  if days.positive?
+    "#{days} day#{days > 1 ? 's' : ''} and #{hours % 24} hours"
+  elsif hours.positive?
+    "#{hours} hour#{hours > 1 ? 's' : ''} and #{mins % 60} minutes"
+  elsif mins.positive?
+    "#{mins} minute#{mins > 1 ? 's' : ''} and #{secs % 60} seconds"
+  elsif secs >= 2
+    "#{secs} seconds"
+  elsif secs == 1
+    '1 second'
+  else
+    '0 seconds'
+  end
+end
+
+# Figure out if we have hosts set up
+host = if File.exist?('.raspi-hostname')
+         File.read('.raspi-hostname')
+       else
+         prompt.ask('Pi hostname', default: 'raspberry').tap do |answ|
+           File.open('.raspi-hostname', 'w+') { |f| f << answ }
+         end
+       end
+
+# Pre-programmed install choices
+ic = {
+  waveshare: 'Waveshare NFC Code',
+  ruby: 'Ruby',
+  taptag: 'Taptag',
+  custom: 'Custom'
+}
+
+# Ask for what should be installed
+tasks = prompt.multi_select('What should be installed?', ic.values)
+              .map { |t| ic.key(t) }
+
+# Empty array of commands to run
+cmds = []
+
+# Update our apt repos
+cmds << 'sudo apt-get update' if tasks.include?(:custom) || tasks.include?(:ruby)
+
+# Handle custom apt installs
+if tasks.include?(:custom)
+  pkgs = prompt.ask('Enter space separated list of packages to install with apt:')
+  cmds << "sudo apt get install #{pkgs} -y"
+end
+
+if tasks.include?(:ruby)
+  # Build the system level install command
+  cmds << 'sudo apt-get install ruby-full -y'
+  # Install ruby basic gems
+  cmds << 'sudo gem install bundler rake'
+end
+
+if tasks.include?(:waveshare)
+  # Make a tmp folder to write into
+  cmds << 'mkdir -p ~/taptag/tmp' unless Dir.exist?('~/taptag/tmp')
+  cmds << 'cd ~/taptag/tmp'
+
+  gh_url = 'https://github.com/jtp184/taptag/vendor/'
+
+  %w[pn532 pn532_rpi].each do |cfile|
+    # Download files
+    cmds << "wget #{gh_url + cfile}.c"
+    cmds << "wget #{gh_url + cfile}.h"
+
+    # Create library and copy to c lib folder
+    cmds << "gcc -c -Wall -Werror -fpic #{cfile}.c"
+    cmds << "gcc -shared -o lib#{cfile}.so #{cfile}.o"
+
+    cmds << "sudo mv lib#{cfile}.so /usr/lib"
+  end
+end
+
+# Clone the repo if requested
+if tasks.include?(:taptag)
+  cmds << 'sudo rm -rf ~/taptag'
+  cmds << 'git clone https://github.com/jtp184/taptag.git ~/taptag'
+  cmds << 'cd ~/taptag && bundle'
+  cmds << 'cd ~/taptag && sudo rake install'
+end
+
+# Run the commands on the remote device
+Net::SSH.start(host, 'pi') do |ssh|
+  cmds.each do |com|
+    @timer = Time.now
+    ssh.open_channel do |chan|
+      puts "Running `#{com.yellow}`"
+      puts
+
+      chan.exec(com) do |ch, success|
+        raise 'Could not execute command' unless success
+
+        # Show output on our device
+        if @flags[:verbose]
+          ch.on_data { |_c, data| $stdout.print data.to_s.light_black }
+          ch.on_extended_data { |_c, _type, data| $stderr.print data.to_s.light_black }
+        end
+
+        ch.on_close do
+          tim = @durationizer[Time.now - @timer]
+
+          puts ['Finished '.green.bold, "(#{tim})"].join
+          puts
+        end
+      end
+    end.wait
+  end
+end
