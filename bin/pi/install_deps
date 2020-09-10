@@ -80,7 +80,7 @@ cmds << 'sudo apt-get update' if tasks.include?(:custom) || tasks.include?(:ruby
 # Handle custom apt installs
 if tasks.include?(:custom)
   pkgs = prompt.ask('Enter space separated list of packages to install with apt:')
-  cmds << "sudo apt get install #{pkgs} -y"
+  cmds << "sudo apt-get install #{pkgs} -y"
 end
 
 if tasks.include?(:ruby)
@@ -153,3 +153,5 @@ Net::SSH.start(host, 'pi') do |ssh|
     end.wait
   end
 end
+
+puts 'Finished!'.green
