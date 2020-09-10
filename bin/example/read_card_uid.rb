@@ -25,7 +25,7 @@ loop do
   cuid = Taptag::NFC.card_uid
   next unless cuid
 
-  spinner.stop('Found!'.green)
+  spinner.success('Found!'.green)
 
   cuid.map! do |byte|
     s = byte.to_s(16)
