@@ -99,8 +99,9 @@ if tasks.include?(:waveshare)
 
   %w[pn532 pn532_rpi].each do |cfile|
     # Download files
-    cmds << "wget #{gh_url + cfile}.c"
-    cmds << "wget #{gh_url + cfile}.h"
+    %w[c h].each do |ending|
+      cmds << "wget #{gh_url + cfile}.#{ending}"
+    end
 
     # Create library and copy to c lib folder
     cmds << "gcc -c -Wall -Werror -fpic #{cfile}.c"
