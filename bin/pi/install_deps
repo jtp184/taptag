@@ -93,7 +93,7 @@ if tasks.include?(:waveshare)
   cmds << 'mkdir -p ~/taptag/tmp' unless Dir.exist?('~/taptag/tmp')
   cmds << 'cd ~/taptag/tmp'
 
-  gh_url = 'https://github.com/jtp184/taptag/vendor/'
+  gh_url = 'https://raw.github.com/jtp184/taptag/vendor/'
 
   %w[pn532 pn532_rpi].each do |cfile|
     # Download files
