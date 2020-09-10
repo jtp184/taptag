@@ -10,6 +10,8 @@ gemfile do
   gem 'colorize'
   gem 'tty-prompt'
   gem 'net-ssh'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 # Set up the prompt for user input
@@ -22,7 +24,7 @@ prompt = TTY::Prompt.new(
 OptionParser.new do |opts|
   opts.banner = 'Usage: install_deps [options]'
 
-  opts.on('-v', '--[no-]verbose', 'Print output of commands') do |v|
+  opts.on('-v', '--verbose [LEVEL]', Integer, 'Print output of commands') do |v|
     @flags[:verbose] = v
   end
 end.parse!
