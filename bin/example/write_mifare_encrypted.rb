@@ -75,7 +75,7 @@ encrypted_string = encrypted_data[:data]
     store_loc = prompt.ask("Where to store #{msig} file?", default: './')
     fname = "#{msig}_#{cuid.map(&format_bytes).join}.bin"
 
-    File.open(store_loc + fname, 'w+') do |f|
+    File.open(store_loc + fname, 'w+b') do |f|
       f << encrypted_data[msig]
     end
     puts "Saved file #{(store_loc + fname).green}"
