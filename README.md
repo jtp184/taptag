@@ -201,16 +201,16 @@ Taptag::Encrypter.decrypt(dc) # => 'Pemalite Crystal'
 
 The `PN532` module uses the FFI library to access the C library code provided by waveshare. It holds the library constants, C structs, and attaches the following functions:
 
-- `PN532_ReadPassiveTarget`: `read_passive_target`
-- `PN532_SamConfiguration`: `sam_configuration`
-- `PN532_GetFirmwareVersion`: `get_firmware_version`
-- `PN532_MifareClassicAuthenticateBlock`: `mifare_authenticate_block`
-- `PN532_MifareClassicReadBlock`: `mifare_read_block`
-- `PN532_MifareClassicWriteBlock`: `mifare_write_block`
-- `PN532_Ntag2xxReadBlock`: `ntag_read_block`
-- `PN532_Ntag2xxWriteBlock`: `ntag_write_block`
-- `PN532_SPI_Init`: `spi_init`
-- `PN532_SPI_WaitReady`: `spi_wait_ready`
+- `PN532_ReadPassiveTarget` as `read_passive_target`
+- `PN532_SamConfiguration` as `sam_configuration`
+- `PN532_GetFirmwareVersion` as `get_firmware_version`
+- `PN532_MifareClassicAuthenticateBlock` as `mifare_authenticate_block`
+- `PN532_MifareClassicReadBlock` as `mifare_read_block`
+- `PN532_MifareClassicWriteBlock` as `mifare_write_block`
+- `PN532_Ntag2xxReadBlock` as `ntag_read_block`
+- `PN532_Ntag2xxWriteBlock` as `ntag_write_block`
+- `PN532_SPI_Init` as `spi_init`
+- `PN532_SPI_WaitReady` as `spi_wait_ready`
 
 #### PN532Struct
 The `PN532Struct` class is an FFI struct with a layout defined by the C library.
