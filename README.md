@@ -72,7 +72,7 @@ Write functions are similarly simple
 
 ```ruby
 # Mifare writes need to be authorized, which is handled like reads, so you can simply do
-Taptag::NFC.write_mifare_block(6, Array.new(16) { |i| i })
+Taptag::NFC.write_mifare_block(6, Array.new(16, &:itself))
 
 # If you need to, the auth is providable as the last argument
 Taptag::NFC.write_mifare_block(6, Array.new(16, 0), Taptag::NFC.auth_mifare_block(6))
