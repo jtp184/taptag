@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>README.md</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='file' id='wrapper'>
+<div class='header'>
+<h1 class='name'>README.md
+</h1>
+<div class='paths'>
+README.md
+</div>
+<div class='last-update'>
+Last Update:
+<span class='datetime'>2020-09-11 03:14:59 -0700</span>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<h1 id="label-Taptag"><a href="../classes/Taptag.html"><code>Taptag</code></a><span><a href="#label-Taptag">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p><a href="../classes/Taptag.html"><code>Taptag</code></a> is a gem for interacting with Waveshare&#39;s PN532 NFC HAT. It includes methods for reading and writing from mifare and ntag NFC tags, as well as simple mechanisms for storing and retrieving data.</p>
+
+<h2 id="label-Installation">Installation<span><a href="#label-Installation">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Add this line to your application&#39;s Gemfile:</p>
+
+<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-string">&#39;taptag&#39;</span>, <span class="ruby-value">github:</span> <span class="ruby-string">&#39;jtp184/taptag&#39;</span></pre>
+
+<p>You can also download and install it globally with</p>
+
+<pre>git clone https://github.com/jtp184/taptag.git&#x000A;cd taptag&#x000A;rake install</pre>
+
+<p>For help setting up your pi for use with this gem, check out the <a href="https://github.com/jtp184/taptag/blob/master/RASPI_SETUP.md">RASPI_SETUP</a> instructions</p>
+
+<h2 id="label-Hardware">Hardware<span><a href="#label-Hardware">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>This gem was developed using Waveshare&#39;s <a href="https://www.waveshare.com/wiki/PN532_NFC_HAT">PN532 NFC HAT</a> on the Raspberry Pi 3+, and using Mifare and NTag tags purchased online.</p>
+
+<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<h3 id="label-Documentation">Documentation<span><a href="#label-Documentation">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>All methods and classes are RDoc documented at <a href="https://jtp184.github.io/taptag">jtp184.github.io/taptag</a>/</p>
+
+<h3 id="label-NFC">NFC<span><a href="#label-NFC">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>NFC</code> class is the high level interface to the reader. It can be used to get uids, and read from and write to NFC tags, for both Mifare and NTag cards.</p>
+
+<pre class="ruby"><span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">get_firmware</span> <span class="ruby-comment"># =&gt; [1, 6, 7]</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">card_uid</span> <span class="ruby-comment"># =&gt; array of uid bytes, or nil if no card is detected</span></pre>
+
+<h4 id="label-Mifare+Cards">Mifare Cards<span><a href="#label-Mifare+Cards">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p><a href="../classes/Taptag.html"><code>Taptag</code></a> gives you fine control over read functions, with sensible defaults</p>
+
+<pre class="ruby"><span class="ruby-comment"># Mifare blocks need to be authorized for reading, using their uid and a key</span>&#x000A;<span class="ruby-identifier">cid</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">card_uid</span>&#x000A;<span class="ruby-identifier">ky</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_DEFAULT_KEY</span> <span class="ruby-comment"># Needs to be a FFI::Struct</span>&#x000A;&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-value">6</span>, <span class="ruby-identifier">cid</span>, <span class="ruby-identifier">ky</span>)&#x000A;&#x000A;<span class="ruby-comment"># If they aren&#39;t supplied, the card_uid is called for and the default key is used</span>&#x000A;<span class="ruby-identifier">a</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-value">6</span>) <span class="ruby-comment"># Same as above line</span>&#x000A;&#x000A;<span class="ruby-comment"># You can skip doing auth by passing it as the second argument to read</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_block</span>(<span class="ruby-value">6</span>, <span class="ruby-identifier">a</span>)&#x000A;<span class="ruby-comment"># Or perform it implicitly by passing nothing at all</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_block</span>(<span class="ruby-value">6</span>) <span class="ruby-comment"># =&gt; Calls auth_mifare_block(6), and returns an array of bytes</span>&#x000A;&#x000A;<span class="ruby-comment"># You can also read multiple blocks at once</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_card</span>(<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>) <span class="ruby-comment"># =&gt; [0, [89, 101, 101...], 1, [114, 107...]...10, [...]]</span>&#x000A;&#x000A;<span class="ruby-comment"># Passing no argument reads all of the blocks</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_card</span>.<span class="ruby-identifier">length</span> <span class="ruby-comment"># =&gt; 64</span>&#x000A;&#x000A;<span class="ruby-comment"># It&#39;s also possible to pass arbitrary blocks</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_card</span>([<span class="ruby-value">6</span>, <span class="ruby-value">12</span>, <span class="ruby-value">22</span>]).<span class="ruby-identifier">length</span> <span class="ruby-comment"># =&gt; 3</span></pre>
+
+<p>Write functions are similarly simple</p>
+
+<pre class="ruby"><span class="ruby-comment"># Mifare writes need to be authorized, which is handled like reads, so you can simply do</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">write_mifare_block</span>(<span class="ruby-value">6</span>, <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">16</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span> })&#x000A;&#x000A;<span class="ruby-comment"># If you need to, the auth is providable as the last argument</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">write_mifare_block</span>(<span class="ruby-value">6</span>, <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">16</span>, <span class="ruby-value">0</span>), <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-value">6</span>))&#x000A;&#x000A;<span class="ruby-comment"># You can also write multiple blocks at once. Pass a 2D array with indexes</span>&#x000A;<span class="ruby-identifier">blks</span> = [&#x000A;  [<span class="ruby-value">1</span>, <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">16</span>, <span class="ruby-value">0</span>)],&#x000A;  [<span class="ruby-value">2</span>, <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">16</span>, <span class="ruby-value">255</span>)]&#x000A;]&#x000A;&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">write_mifare_card</span>(<span class="ruby-identifier">blks</span>) <span class="ruby-comment"># You can also pass card_uid and key</span></pre>
+
+<h4 id="label-NTag+Cards">NTag Cards<span><a href="#label-NTag+Cards">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>NTag cards are very similar, except they don&#39;t have an auth step</p>
+
+<pre class="ruby"><span class="ruby-comment"># Read a single block</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_ntag_block</span>(<span class="ruby-value">15</span>) <span class="ruby-comment"># =&gt; [69, 114, 101, 107]</span>&#x000A;&#x000A;<span class="ruby-comment"># Or multiple blocks</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_ntag_card</span>([<span class="ruby-value">21</span>, <span class="ruby-value">23</span>, <span class="ruby-value">25</span>]).<span class="ruby-identifier">length</span> <span class="ruby-comment"># =&gt; 3</span>&#x000A;&#x000A;<span class="ruby-comment"># Or an entire card</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_ntag_card</span> <span class="ruby-comment"># =&gt; [0, [...]...]</span></pre>
+
+<h3 id="label-Encoder">Encoder<span><a href="#label-Encoder">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>Encoder</code> class translates strings to byte arrays and back again, using <code>String#ord</code>. It allows you to easily prepare data to be stored in NFC tags, and decode the data you&#39;ve stored there.</p>
+
+<pre class="ruby"><span class="ruby-identifier">str0</span> = <span class="ruby-string">&quot;Elfangor-Sirinial-Shamtul&quot;</span>&#x000A;&#x000A;<span class="ruby-comment"># You can turn a string into ordenal codepoints</span>&#x000A;<span class="ruby-identifier">bytes0</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">encode_string</span>(<span class="ruby-identifier">str0</span>) <span class="ruby-comment"># =&gt; [69, 108, 102, 97...]</span>&#x000A;&#x000A;<span class="ruby-comment"># And reverse it</span>&#x000A;<span class="ruby-identifier">str1</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">decode_string</span>(<span class="ruby-identifier">bytes0</span>) <span class="ruby-comment"># =&gt; &quot;Elfangor-Sirinial-Shamtul&quot;</span>&#x000A;&#x000A;<span class="ruby-comment"># Slice those codepoints into frames, with padding</span>&#x000A;<span class="ruby-identifier">frames</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">slice_string</span>(<span class="ruby-identifier">bytes0</span>, <span class="ruby-value">16</span>) <span class="ruby-comment"># =&gt; [[69, 108, 102...], [108, 45, 83...]]</span>&#x000A;&#x000A;<span class="ruby-comment"># And zip them up with block ids</span>&#x000A;<span class="ruby-identifier">blocks</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">reduce_blocks</span>(<span class="ruby-identifier">frames</span>, [<span class="ruby-value">1</span>, <span class="ruby-value">2</span>])&#x000A;&#x000A;<span class="ruby-comment"># Not providing block ids reduces them with the writable mifare blocks by default</span>&#x000A;<span class="ruby-identifier">blocks</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">reduce_blocks</span>(<span class="ruby-identifier">frames</span>) <span class="ruby-comment"># =&gt; [1, [69...]]</span>&#x000A;&#x000A;<span class="ruby-comment"># The array is now suitible for passing to the NFC object</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">write_mifare_card</span>(<span class="ruby-identifier">blocks</span>)&#x000A;&#x000A;<span class="ruby-comment"># Using the .call function automagically applies the apropriate steps to objects</span>&#x000A;&#x000A;<span class="ruby-identifier">bytes1</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">call</span>(<span class="ruby-string">&#39;Yeerk&#39;</span>) <span class="ruby-comment"># =&gt; [[1, [89, 101, 101, 114, 107, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]]</span>&#x000A;<span class="ruby-identifier">str2</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">bytes1</span>) <span class="ruby-comment"># =&gt; &#39;Yeerk&#39;</span>&#x000A;<span class="ruby-identifier">bytes2</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">bytes0</span>) <span class="ruby-comment"># =&gt; [[69, 108...], [108, 45...]]</span>&#x000A;&#x000A;<span class="ruby-comment"># And is aliased to .[] for ease of use</span>&#x000A;&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>[<span class="ruby-string">&#39;Tobias&#39;</span>] <span class="ruby-comment"># =&gt; [1, [84, 111...]]</span></pre>
+
+<h3 id="label-Encrypter">Encrypter<span><a href="#label-Encrypter">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>Encrypter</code> class is a frontend for the stdlib OpenSSL library, allowing you to store you data on tags securely.</p>
+
+<pre class="ruby"><span class="ruby-identifier">str</span> = <span class="ruby-string">&quot;Escafil Device&quot;</span>&#x000A;&#x000A;<span class="ruby-comment"># With only string argument, randomly generates and returns random key and initial vector</span>&#x000A;<span class="ruby-identifier">enc0</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">encrypt</span>(<span class="ruby-identifier">str</span>)&#x000A;<span class="ruby-comment"># =&gt; {</span>&#x000A;<span class="ruby-comment">#      :key=&gt;&quot;l\xD6n2\x9D\x82\x8C\xE4\x9FPX\xF0v\xB6\x82\xD0&quot;,</span>&#x000A;<span class="ruby-comment">#      :vector=&gt;&quot;~\ti)f\xCC\xF3\x7F\xE1\xF1\xF0^\xCB\x9F\x12M&quot;,</span>&#x000A;<span class="ruby-comment">#      :data=&gt;&quot;\v\xDE\xAF\xA1\xF3,\x1C\xD5\xF2)\xC2\x90\xD0\f9N&quot;</span>&#x000A;<span class="ruby-comment">#    }</span>&#x000A;&#x000A;<span class="ruby-comment"># You can also pass them in if you need to</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">encrypt</span>(<span class="ruby-identifier">str</span>, <span class="ruby-value">key:</span> <span class="ruby-identifier">enc0</span>[<span class="ruby-value">:key</span>], <span class="ruby-value">vector:</span> <span class="ruby-identifier">enc0</span>[<span class="ruby-value">:vector</span>])&#x000A;&#x000A;<span class="ruby-comment"># You can also choose the algorithm used, which is AES-128-CBC by default</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">encrypt</span>(<span class="ruby-identifier">str</span>, <span class="ruby-value">algorithm:</span> <span class="ruby-string">&#39;AES-256-CBC&#39;</span>)&#x000A;&#x000A;<span class="ruby-comment"># Decrypting requires the vector, key, and data</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">decrypt</span>(<span class="ruby-identifier">enc0</span>) <span class="ruby-comment"># =&gt; &quot;Escafil Device&quot;</span></pre>
+
+<p>For examples of storing data on device, check out <a href="https://github.com/jtp184/taptag/blob/master/bin/example">the examples</a>. Here&#39;s a simple, albiet insecure workflow</p>
+
+<pre class="ruby"><span class="ruby-identifier">str</span> = <span class="ruby-string">&#39;Pemalite Crystal&#39;</span>&#x000A;&#x000A;<span class="ruby-identifier">enc</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">encrypt</span>(<span class="ruby-identifier">str</span>)&#x000A;&#x000A;<span class="ruby-comment"># We join the key, vector, and encrypted data into a single string and encode it.</span>&#x000A;<span class="ruby-comment"># Since the key and vector are 16 bytes long, they become blocks 1 and 2</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">write_mifare_card</span>(<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>[<span class="ruby-identifier">enc</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">join</span>])&#x000A;&#x000A;<span class="ruby-comment"># When we decode, we grab all the blocks</span>&#x000A;<span class="ruby-identifier">blocks</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">read_mifare_card</span>&#x000A;&#x000A;<span class="ruby-identifier">dc</span> = {}&#x000A;&#x000A;<span class="ruby-comment"># We only write to valid blocks thanks to the encoder</span>&#x000A;<span class="ruby-identifier">dc</span>[<span class="ruby-value">:key</span>] = <span class="ruby-identifier">blocks</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">last</span>.<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:chr</span>).<span class="ruby-identifier">join</span>&#x000A;<span class="ruby-identifier">dc</span>[<span class="ruby-value">:vector</span>] = <span class="ruby-identifier">blocks</span>[<span class="ruby-value">2</span>].<span class="ruby-identifier">last</span>.<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:chr</span>).<span class="ruby-identifier">join</span>&#x000A;&#x000A;<span class="ruby-comment"># We can decode the string and then discard the key and vector bytes</span>&#x000A;<span class="ruby-identifier">dc</span>[<span class="ruby-value">:data</span>] = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encoder</span>[<span class="ruby-identifier">blocks</span>][<span class="ruby-value">32</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]&#x000A;&#x000A;<span class="ruby-comment"># And then decrypt our data</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">Encrypter</span>.<span class="ruby-identifier">decrypt</span>(<span class="ruby-identifier">dc</span>) <span class="ruby-comment"># =&gt; &#39;Pemalite Crystal&#39;</span></pre>
+
+<h2 id="label-Contributing">Contributing<span><a href="#label-Contributing">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/jtp184/taptag">github.com/jtp184/taptag</a></p>
+</div>
+<div id='context'>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

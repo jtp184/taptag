@@ -1,0 +1,27 @@
+Fri, 11 Sep 2020 03:15:17 -0700
+./bin/example/dump_mifare_card.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/dump_ntag_card.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/read_card_uid.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/read_mifare_encrypted.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/read_mifare_plaintext.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/write_mifare_encrypted.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/example/write_mifare_plaintext.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./bin/pi/boot_config	Thu, 10 Sep 2020 02:36:31 -0700
+./bin/pi/changelogin	Thu, 10 Sep 2020 02:36:31 -0700
+./bin/pi/install_deps	Thu, 10 Sep 2020 02:50:42 -0700
+./bin/pi/pi.rb	Thu, 10 Sep 2020 02:36:31 -0700
+./bin/pi/ssh	Thu, 10 Sep 2020 02:36:31 -0700
+./bin/pi/wpa_config	Thu, 10 Sep 2020 02:36:31 -0700
+./lib/taptag/encoder.rb	Fri, 11 Sep 2020 01:31:55 -0700
+./lib/taptag/encrypter.rb	Wed, 09 Sep 2020 23:28:18 -0700
+./lib/taptag/nfc.rb	Wed, 09 Sep 2020 03:52:48 -0700
+./lib/taptag/pn532/library_constants.rb	Wed, 09 Sep 2020 02:02:14 -0700
+./lib/taptag/pn532/pn532.rb	Wed, 09 Sep 2020 01:52:30 -0700
+./lib/taptag/pn532/structs.rb	Wed, 09 Sep 2020 02:02:14 -0700
+./lib/taptag/version.rb	Wed, 09 Sep 2020 02:02:14 -0700
+./lib/taptag.rb	Wed, 09 Sep 2020 16:52:49 -0700
+./README.md	Fri, 11 Sep 2020 03:14:59 -0700
+./vendor/pn532.c	Thu, 10 Sep 2020 02:36:31 -0700
+./vendor/pn532.h	Thu, 10 Sep 2020 02:36:31 -0700
+./vendor/pn532_rpi.c	Thu, 10 Sep 2020 02:36:31 -0700
+./vendor/pn532_rpi.h	Thu, 10 Sep 2020 02:36:31 -0700

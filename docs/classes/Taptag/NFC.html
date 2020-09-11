@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Taptag::NFC</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>module</span>
+Taptag::NFC
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/taptag/nfc_rb.html">lib/taptag/nfc.rb</a>
+</li>
+</ol>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>The higher level interface to the hardware, implements reading and writing functions using ruby conventions.</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-auth_mifare_block">auth_mifare_block</a></li>
+<li><a href="#method-c-card_format">card_format</a></li>
+<li><a href="#method-c-card_uid">card_uid</a></li>
+<li><a href="#method-c-firmware_version">firmware_version</a></li>
+<li><a href="#method-c-read_mifare_block">read_mifare_block</a></li>
+<li><a href="#method-c-read_mifare_card">read_mifare_card</a></li>
+<li><a href="#method-c-read_ntag_block">read_ntag_block</a></li>
+<li><a href="#method-c-read_ntag_card">read_ntag_card</a></li>
+<li><a href="#method-c-write_mifare_block">write_mifare_block</a></li>
+<li><a href="#method-c-write_mifare_card">write_mifare_card</a></li>
+<li><a href="#method-c-write_ntag_block">write_ntag_block</a></li>
+</ol>
+<h3>Private Class</h3>
+<ol>
+<li><a href="#method-c-check_error">check_error</a></li>
+<li><a href="#method-c-pn_struct">pn_struct</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-auth_mifare_block'>
+<a name='method-c-auth_mifare_block'></a>
+<div class='synopsis'>
+<span class='name'>auth_mifare_block</span><span class='arguments'>(blk, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)</span>
+
+</div>
+<div class='description'>
+
+<p>Authenticates rw access to a block</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-auth_mifare_block-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-auth_mifare_block-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 42</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">auth_mifare_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">cuid</span> = <span class="ruby-identifier">card_uid</span>, <span class="ruby-identifier">key</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_DEFAULT_KEY</span>)&#x000A;  <span class="ruby-identifier">uid</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">cuid</span>)&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">mifare_authenticate_block</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">uid</span>,&#x000A;    <span class="ruby-identifier">uid</span>.<span class="ruby-identifier">nonzero_length</span>,&#x000A;    <span class="ruby-identifier">blk</span>,&#x000A;    <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_CMD_AUTH_A</span>,&#x000A;    <span class="ruby-identifier">key</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-identifier">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-card_format'>
+<a name='method-c-card_format'></a>
+<div class='synopsis'>
+<span class='name'>card_format</span><span class='arguments'>(cuid = card_uid)</span>
+
+</div>
+<div class='description'>
+
+<p>Detect card format through uid length</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-card_format-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-card_format-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 30</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">card_format</span>(<span class="ruby-identifier">cuid</span> = <span class="ruby-identifier">card_uid</span>)&#x000A;  <span class="ruby-keyword">case</span> <span class="ruby-identifier">cuid</span>.<span class="ruby-identifier">length</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_UID_SINGLE_LENGTH</span>&#x000A;    <span class="ruby-value">:mifare</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_UID_DOUBLE_LENGTH</span>&#x000A;    <span class="ruby-value">:ntag</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-card_uid'>
+<a name='method-c-card_uid'></a>
+<div class='synopsis'>
+<span class='name'>card_uid</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Invokes PN532#read_passive_target to get the uid length and return a byte array</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-card_uid-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-card_uid-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 14</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">card_uid</span>&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">read_passive_target</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">buffer</span>,&#x000A;    <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_ISO14443A</span>,&#x000A;    <span class="ruby-value">1000</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">resp</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">STATUS_ERROR</span>&#x000A;&#x000A;  <span class="ruby-identifier">buffer</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">resp</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-firmware_version'>
+<a name='method-c-firmware_version'></a>
+<div class='synopsis'>
+<span class='name'>firmware_version</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Returns the firmware version reported by the device as a byte array</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-firmware_version-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-firmware_version-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 7</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">firmware_version</span>&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>&#x000A;  <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">get_firmware_version</span>(<span class="ruby-identifier">pn_struct</span>, <span class="ruby-identifier">buffer</span>)&#x000A;  <span class="ruby-identifier">buffer</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-read_mifare_block'>
+<a name='method-c-read_mifare_block'></a>
+<div class='synopsis'>
+<span class='name'>read_mifare_block</span><span class='arguments'>(blk, _auth = auth_mifare_block(blk))</span>
+
+</div>
+<div class='description'>
+
+<p>Reads the data in block <code>blk</code>, preauth is automatically done with <code>_auth</code></p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-read_mifare_block-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-read_mifare_block-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 58</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">read_mifare_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">_auth</span> = <span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-identifier">blk</span>))&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">mifare_read_block</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">buffer</span>,&#x000A;    <span class="ruby-identifier">blk</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-identifier">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;  <span class="ruby-identifier">buffer</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_BLOCK_LENGTH</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-read_mifare_card'>
+<a name='method-c-read_mifare_card'></a>
+<div class='synopsis'>
+<span class='name'>read_mifare_card</span><span class='arguments'>(rng = 0...PN532::MIFARE_BLOCK_COUNT, cuid = card_uid)</span>
+
+</div>
+<div class='description'>
+
+<p>Reads <code>cuid</code> once, and reads blocks in <code>rng</code> off of the card into a 2D Array</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-read_mifare_card-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-read_mifare_card-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 86</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">read_mifare_card</span>(<span class="ruby-identifier">rng</span> = <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_BLOCK_COUNT</span>, <span class="ruby-identifier">cuid</span> = <span class="ruby-identifier">card_uid</span>)&#x000A;  <span class="ruby-identifier">rng</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-keyword">begin</span>&#x000A;      [<span class="ruby-identifier">x</span>, <span class="ruby-identifier">read_mifare_block</span>(<span class="ruby-identifier">x</span>, <span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-identifier">x</span>, <span class="ruby-identifier">cuid</span>))]&#x000A;    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">IOError</span>&#x000A;      [<span class="ruby-identifier">x</span>, <span class="ruby-keyword">nil</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-read_ntag_block'>
+<a name='method-c-read_ntag_block'></a>
+<div class='synopsis'>
+<span class='name'>read_ntag_block</span><span class='arguments'>(blk)</span>
+
+</div>
+<div class='description'>
+
+<p>Reads the <code>blk</code> off of the card, guards to prevent an uninitialized card</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-read_ntag_block-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-read_ntag_block-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 105</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">read_ntag_block</span>(<span class="ruby-identifier">blk</span>)&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">ntag_read_block</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">buffer</span>,&#x000A;    <span class="ruby-identifier">blk</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-identifier">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;&#x000A;  <span class="ruby-identifier">buffer</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">NTAG2XX_BLOCK_LENGTH</span>]&#x000A;<span class="ruby-keyword">rescue</span> <span class="ruby-constant">IOError</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">e</span>&#x000A;  <span class="ruby-identifier">raise</span> <span class="ruby-identifier">e</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/ERROR_CONTEXT/</span>&#x000A;&#x000A;  <span class="ruby-identifier">card_uid</span>&#x000A;  <span class="ruby-identifier">sleep</span> <span class="ruby-value">1</span>&#x000A;  <span class="ruby-identifier">read_ntag_block</span>(<span class="ruby-identifier">blk</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-read_ntag_card'>
+<a name='method-c-read_ntag_card'></a>
+<div class='synopsis'>
+<span class='name'>read_ntag_card</span><span class='arguments'>(rng = 0...PN532::NTAG2XX_BLOCK_COUNT)</span>
+
+</div>
+<div class='description'>
+
+<p>Reads the blocks in +rng off of the card into a 2D Array</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-read_ntag_card-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-read_ntag_card-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 141</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">read_ntag_card</span>(<span class="ruby-identifier">rng</span> = <span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">NTAG2XX_BLOCK_COUNT</span>)&#x000A;  <span class="ruby-identifier">rng</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>&#x000A;    <span class="ruby-keyword">begin</span>&#x000A;      [<span class="ruby-identifier">x</span>, <span class="ruby-identifier">read_ntag_block</span>(<span class="ruby-identifier">x</span>)]&#x000A;    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">IOError</span>&#x000A;      [<span class="ruby-identifier">x</span>, <span class="ruby-keyword">nil</span>]&#x000A;    <span class="ruby-keyword">end</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-write_mifare_block'>
+<a name='method-c-write_mifare_block'></a>
+<div class='synopsis'>
+<span class='name'>write_mifare_block</span><span class='arguments'>(blk, data, _auth = auth_mifare_block(blk))</span>
+
+</div>
+<div class='description'>
+
+<p>Writes the <code>data</code> provided to the <code>blk</code> authorizing by default with <code>_auth</code></p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-write_mifare_block-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-write_mifare_block-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 72</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">write_mifare_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">_auth</span> = <span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-identifier">blk</span>))&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">data</span>)&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">mifare_write_block</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">buffer</span>,&#x000A;    <span class="ruby-identifier">blk</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-identifier">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;  [<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-write_mifare_card'>
+<a name='method-c-write_mifare_card'></a>
+<div class='synopsis'>
+<span class='name'>write_mifare_card</span><span class='arguments'>(blocks, cuid = card_uid, key = PN532::MIFARE_DEFAULT_KEY)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in a 2D array of <code>blocks</code>, of format [blk_num, <a href="]">data</a>, a default <code>cuid</code>, and the default <code>key</code> to write multiple blocks on the card</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-write_mifare_card-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-write_mifare_card-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 98</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">write_mifare_card</span>(<span class="ruby-identifier">blocks</span>, <span class="ruby-identifier">cuid</span> = <span class="ruby-identifier">card_uid</span>, <span class="ruby-identifier">key</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">MIFARE_DEFAULT_KEY</span>)&#x000A;  <span class="ruby-identifier">blocks</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">|</span> <span class="ruby-identifier">write_mifare_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">auth_mifare_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">cuid</span>, <span class="ruby-identifier">key</span>)) }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-write_ntag_block'>
+<a name='method-c-write_ntag_block'></a>
+<div class='synopsis'>
+<span class='name'>write_ntag_block</span><span class='arguments'>(blk, data)</span>
+
+</div>
+<div class='description'>
+
+<p>Writes the <code>data</code> to the <code>blk</code></p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-write_ntag_block-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-write_ntag_block-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 126</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">write_ntag_block</span>(<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span>)&#x000A;  <span class="ruby-identifier">buffer</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">set</span>(<span class="ruby-identifier">data</span>)&#x000A;&#x000A;  <span class="ruby-identifier">resp</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">ntag_write_block</span>(&#x000A;    <span class="ruby-identifier">pn_struct</span>,&#x000A;    <span class="ruby-identifier">buffer</span>,&#x000A;    <span class="ruby-identifier">blk</span>&#x000A;  )&#x000A;&#x000A;  <span class="ruby-identifier">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;&#x000A;  [<span class="ruby-identifier">blk</span>, <span class="ruby-identifier">data</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Private Class methods</h2>
+<div class='method private-class' id='method-method-c-check_error'>
+<a name='method-c-check_error'></a>
+<div class='synopsis'>
+<span class='name'>check_error</span><span class='arguments'>(resp)</span>
+
+</div>
+<div class='description'>
+
+<p>Guards against error by confirming a 0 response</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-check_error-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-check_error-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 165</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">check_error</span>(<span class="ruby-identifier">resp</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">resp</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">ERROR_NONE</span>&#x000A;    <span class="ruby-identifier">err</span> = <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">lib_constants</span>&#x000A;               .<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span>, <span class="ruby-identifier">_y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/error/</span> }&#x000A;               .<span class="ruby-identifier">key</span>(<span class="ruby-identifier">resp</span>)&#x000A;&#x000A;    <span class="ruby-identifier">raise</span> <span class="ruby-constant">IOError</span>, <span class="ruby-node">&quot;PN532 Error (#{err || resp})&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">block_given?</span>&#x000A;&#x000A;    <span class="ruby-keyword">yield</span> <span class="ruby-identifier">err</span>, <span class="ruby-identifier">resp</span>&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-identifier">resp</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method private-class' id='method-method-c-pn_struct'>
+<a name='method-c-pn_struct'></a>
+<div class='synopsis'>
+<span class='name'>pn_struct</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Initializes and memoizes a PN532Struct for device control</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-pn_struct-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-pn_struct-source'><span class="ruby-comment"># File lib/taptag/nfc.rb, line 154</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">pn_struct</span>&#x000A;  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@pn_struct</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@pn_struct</span>&#x000A;&#x000A;  <span class="ruby-ivar">@pn_struct</span> = <span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">PN532Struct</span>.<span class="ruby-identifier">new</span>&#x000A;  <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">spi_init</span>(<span class="ruby-ivar">@pn_struct</span>)&#x000A;  <span class="ruby-constant">PN532</span>.<span class="ruby-identifier">sam_configuration</span>(<span class="ruby-ivar">@pn_struct</span>)&#x000A;&#x000A;  <span class="ruby-ivar">@pn_struct</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

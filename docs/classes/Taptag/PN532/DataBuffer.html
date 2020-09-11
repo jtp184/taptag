@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Taptag::PN532::DataBuffer</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Taptag::PN532::DataBuffer
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../../files/lib/taptag/pn532/structs_rb.html">lib/taptag/pn532/structs.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>FFI::Struct</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>C Level buffer for data</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Instance</h3>
+<ol>
+<li><a href="#method-i-5B-5D">[]</a></li>
+<li><a href="#method-i-nonzero_length">nonzero_length</a></li>
+<li><a href="#method-i-reset">reset</a></li>
+<li><a href="#method-i-to_a">to_a</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='aliases-list'>
+<h2>Public Instance Aliases</h2>
+<div class='name-list'>
+<table summary='Public Instance Aliases'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>set</td>
+<td>-&gt;</td>
+<td class='context-item-value'><a href="#method-i-reset">reset</a></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Instance methods</h2>
+<div class='method public-instance' id='method-method-i-5B-5D'>
+<a name='method-i-5B-5D'></a>
+<div class='synopsis'>
+<span class='name'>[]</span><span class='arguments'>(val)</span>
+
+</div>
+<div class='description'>
+
+<p>Convert to array, and pass <code>val</code> to it</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-5B-5D-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-5B-5D-source'><span class="ruby-comment"># File lib/taptag/pn532/structs.rb, line 24</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">[]</span>(<span class="ruby-identifier">val</span>)&#x000A;  <span class="ruby-identifier">to_a</span>[<span class="ruby-identifier">val</span>]&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-nonzero_length'>
+<a name='method-i-nonzero_length'></a>
+<div class='synopsis'>
+<span class='name'>nonzero_length</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Return the length minus the zeroes</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-nonzero_length-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-nonzero_length-source'><span class="ruby-comment"># File lib/taptag/pn532/structs.rb, line 43</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nonzero_length</span>&#x000A;  <span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">reject</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:zero?</span>).<span class="ruby-identifier">length</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-reset'>
+<a name='method-i-reset'></a>
+<div class='synopsis'>
+<span class='name'>reset</span><span class='arguments'>(arry = Array.new(255, 0))</span>
+
+</div>
+<div class='description'>
+
+<p>Writes the <code>arry</code> to the buffer</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-reset-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-reset-source'><span class="ruby-comment"># File lib/taptag/pn532/structs.rb, line 29</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reset</span>(<span class="ruby-identifier">arry</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">255</span>, <span class="ruby-value">0</span>))&#x000A;  <span class="ruby-identifier">arry</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">255</span>, <span class="ruby-value">0</span>)&#x000A;  <span class="ruby-identifier">ry</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">255</span>, <span class="ruby-value">0</span>)&#x000A;            .<span class="ruby-identifier">map</span>&#x000A;            .<span class="ruby-identifier">with_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">_i</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span> = <span class="ruby-identifier">arry</span>[<span class="ruby-identifier">x</span>] <span class="ruby-operator">||</span> <span class="ruby-value">0</span> }&#x000A;&#x000A;  <span class="ruby-identifier">to_ptr</span>.<span class="ruby-identifier">write_array_of_uint8</span>(<span class="ruby-identifier">ry</span>)&#x000A;&#x000A;  <span class="ruby-keyword">self</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-instance' id='method-method-i-to_a'>
+<a name='method-i-to_a'></a>
+<div class='synopsis'>
+<span class='name'>to_a</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Read the internal array out</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-i-to_a-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-i-to_a-source'><span class="ruby-comment"># File lib/taptag/pn532/structs.rb, line 19</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">to_a</span>&#x000A;  <span class="ruby-identifier">to_ptr</span>.<span class="ruby-identifier">read_array_of_uint8</span>(<span class="ruby-value">255</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>
