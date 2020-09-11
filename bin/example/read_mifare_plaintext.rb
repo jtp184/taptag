@@ -9,6 +9,7 @@ gemfile do
 
   gem 'colorize'
   gem 'tty-spinner'
+  gem 'tty-box'
 end
 
 # Set up a spinner factory
@@ -61,6 +62,8 @@ dump_spin.run do |spin|
 end
 
 # Unencode and display
-puts Taptag::Encoder[bytes]
+puts TTY::Box.frame(width: 30, height: 10, title: { top_left: 'DATA' }) do
+  Taptag::Encoder[bytes]
+end
 
 exit
