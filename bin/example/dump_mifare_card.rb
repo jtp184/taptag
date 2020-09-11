@@ -24,6 +24,7 @@ end
 
 # Fun randomized color display
 byte_colors = Hash.new { |hsh, key| hsh[key] = %i[red yellow cyan blue green magenta].sample }
+byte_colors[0] = :light_black
 
 # Formats the bytes into hex and colorizes them
 format_bytes = proc do |byte|
