@@ -23,15 +23,18 @@ spinner.auto_spin
 
 loop do
   cuid = Taptag::NFC.card_uid
+  # Loop until the cuid is not nil
   next unless cuid
 
   spinner.success('Found!'.green)
 
+  # Map it to hex for easier presentation
   cuid.map! do |byte|
-    s = byte.to_s(16)
-    s.chars.one? ? "0#{s.upcase}" : s.upcase
+    s = byte.to_s(16).upcase
+    s.chars.one? ? "0#{s}" : s
   end
 
+  # Print it out and exit the loop
   puts "[🏷️] #{cuid.join(' ')}"
   exit
 end
