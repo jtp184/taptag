@@ -24,9 +24,9 @@ module Taptag
 
       # Takes +bytes+ and converts it back into a string
       def decode_string(bytes)
-        bytes.reject(&:zero?)
-             .map(&:chr)
+        bytes.map(&:chr)
              .join
+             .gsub(/#{0.chr}*$/, '')
       end
 
       # Takes the +str+ and splits it into +blks+ frames with some shorthand
