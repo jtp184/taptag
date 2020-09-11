@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Taptag::Encoder</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>class</span>
+Taptag::Encoder
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/taptag/encoder_rb.html">lib/taptag/encoder.rb</a>
+</li>
+</ol>
+<div class='parent'>
+Superclass:
+<strong>Object</strong>
+</div>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Handles translating messages to byte frames for writing to devices</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-blank_blocks">blank_blocks</a></li>
+<li><a href="#method-c-call">call</a></li>
+<li><a href="#method-c-decode_string">decode_string</a></li>
+<li><a href="#method-c-encode_string">encode_string</a></li>
+<li><a href="#method-c-reduce_blocks">reduce_blocks</a></li>
+<li><a href="#method-c-slice_string">slice_string</a></li>
+<li><a href="#method-c-writable_mifare_blocks">writable_mifare_blocks</a></li>
+<li><a href="#method-c-zip_blocks">zip_blocks</a></li>
+</ol>
+<h3>Private Class</h3>
+<ol>
+<li><a href="#method-c-blk_length">blk_length</a></li>
+<li><a href="#method-c-identify_2d_array">identify_2d_array</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='aliases-list'>
+<h2>Public Class Aliases</h2>
+<div class='name-list'>
+<table summary='Public Class Aliases'>
+<tr class='top-aligned-row context-row'>
+<td class='context-item-name'>[]</td>
+<td>-&gt;</td>
+<td class='context-item-value'><a href="#method-c-call">call</a></td>
+</tr>
+</table>
+</div>
+</div>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-blank_blocks'>
+<a name='method-c-blank_blocks'></a>
+<div class='synopsis'>
+<span class='name'>blank_blocks</span><span class='arguments'>(filter = writable_mifare_blocks, blks = Array.new(16, 0))</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in the <code>filter</code> and zips it with blank blocks</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-blank_blocks-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-blank_blocks-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 60</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">blank_blocks</span>(<span class="ruby-identifier">filter</span> = <span class="ruby-identifier">writable_mifare_blocks</span>, <span class="ruby-identifier">blks</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">16</span>, <span class="ruby-value">0</span>))&#x000A;  <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>&#x000A;    [<span class="ruby-identifier">x</span>, <span class="ruby-identifier">blks</span>]&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-call'>
+<a name='method-c-call'></a>
+<div class='synopsis'>
+<span class='name'>call</span><span class='arguments'>(input, fmt = :mifare, blk_filter = writable_mifare_blocks)</span>
+
+</div>
+<div class='description'>
+
+<p>Master input function, takes in <code>input</code> and optional values for <code>fmt</code> and <code>blk_filter</code> and can turn strings into 2d write arrays, 2d arrays into strings, and 1D arrays into 2d arrays</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-call-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-call-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 8</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">call</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">fmt</span> = <span class="ruby-value">:mifare</span>, <span class="ruby-identifier">blk_filter</span> = <span class="ruby-identifier">writable_mifare_blocks</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)&#x000A;    <span class="ruby-identifier">zip_blocks</span>(<span class="ruby-identifier">slice_string</span>(<span class="ruby-identifier">encode_string</span>(<span class="ruby-identifier">input</span>), <span class="ruby-identifier">fmt</span>))&#x000A;  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">identify_2d_array</span>(<span class="ruby-identifier">input</span>)&#x000A;    <span class="ruby-identifier">decode_string</span> <span class="ruby-identifier">reduce_blocks</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">blk_filter</span>)&#x000A;  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)&#x000A;    <span class="ruby-identifier">slice_string</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">fmt</span>)&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-decode_string'>
+<a name='method-c-decode_string'></a>
+<div class='synopsis'>
+<span class='name'>decode_string</span><span class='arguments'>(bytes)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes <code>bytes</code> and converts it back into a string</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-decode_string-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-decode_string-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 26</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">decode_string</span>(<span class="ruby-identifier">bytes</span>)&#x000A;  <span class="ruby-identifier">bytes</span>.<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:chr</span>)&#x000A;       .<span class="ruby-identifier">join</span>&#x000A;       .<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/#{0.chr}*$/</span>, <span class="ruby-string">&#39;&#39;</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-encode_string'>
+<a name='method-c-encode_string'></a>
+<div class='synopsis'>
+<span class='name'>encode_string</span><span class='arguments'>(str)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes <code>str</code> and converts the chars to ordinals</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-encode_string-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-encode_string-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 21</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">encode_string</span>(<span class="ruby-identifier">str</span>)&#x000A;  <span class="ruby-identifier">str</span>.<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:ord</span>)&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-reduce_blocks'>
+<a name='method-c-reduce_blocks'></a>
+<div class='synopsis'>
+<span class='name'>reduce_blocks</span><span class='arguments'>(blks, filter = writable_mifare_blocks)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in <code>blks</code> and a <code>filter</code> array to select blocks</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-reduce_blocks-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-reduce_blocks-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 43</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reduce_blocks</span>(<span class="ruby-identifier">blks</span>, <span class="ruby-identifier">filter</span> = <span class="ruby-identifier">writable_mifare_blocks</span>)&#x000A;  <span class="ruby-keyword">if</span> <span class="ruby-identifier">identify_2d_array</span>(<span class="ruby-identifier">blks</span>)&#x000A;    <span class="ruby-identifier">hsh</span> = <span class="ruby-identifier">blks</span>.<span class="ruby-identifier">to_h</span>&#x000A;    <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hsh</span>[<span class="ruby-identifier">x</span>] }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">flatten</span>&#x000A;  <span class="ruby-keyword">else</span>&#x000A;    <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">blks</span>[<span class="ruby-identifier">x</span>] }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">flatten</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-slice_string'>
+<a name='method-c-slice_string'></a>
+<div class='synopsis'>
+<span class='name'>slice_string</span><span class='arguments'>(str, blks)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes the <code>str</code> and splits it into <code>blks</code> frames with some shorthand</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-slice_string-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-slice_string-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 33</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">slice_string</span>(<span class="ruby-identifier">str</span>, <span class="ruby-identifier">blks</span>)&#x000A;  <span class="ruby-identifier">bloks</span> = <span class="ruby-identifier">blk_length</span>(<span class="ruby-identifier">blks</span>)&#x000A;&#x000A;  <span class="ruby-identifier">frames</span> = <span class="ruby-identifier">str</span>.<span class="ruby-identifier">each_slice</span>(<span class="ruby-identifier">bloks</span>).<span class="ruby-identifier">to_a</span>&#x000A;  <span class="ruby-identifier">frames</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value">0</span> <span class="ruby-keyword">until</span> <span class="ruby-identifier">frames</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">bloks</span>&#x000A;&#x000A;  <span class="ruby-identifier">frames</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-writable_mifare_blocks'>
+<a name='method-c-writable_mifare_blocks'></a>
+<div class='synopsis'>
+<span class='name'>writable_mifare_blocks</span><span class='arguments'>()</span>
+
+</div>
+<div class='description'>
+
+<p>Returns just the write safe blocks for mifare</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-writable_mifare_blocks-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-writable_mifare_blocks-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 67</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">writable_mifare_blocks</span>&#x000A;  <span class="ruby-ivar">@writable_mifare_blocks</span> <span class="ruby-operator">||=</span> (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">63</span>).<span class="ruby-identifier">to_a</span> <span class="ruby-operator">-</span> (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">15</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> (<span class="ruby-value">4</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">x</span>) <span class="ruby-operator">+</span> <span class="ruby-value">3</span> }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-zip_blocks'>
+<a name='method-c-zip_blocks'></a>
+<div class='synopsis'>
+<span class='name'>zip_blocks</span><span class='arguments'>(blks, filter = writable_mifare_blocks)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in the <code>blks</code> and uses the +filter to label the frames</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-zip_blocks-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-zip_blocks-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 53</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">zip_blocks</span>(<span class="ruby-identifier">blks</span>, <span class="ruby-identifier">filter</span> = <span class="ruby-identifier">writable_mifare_blocks</span>)&#x000A;  <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">map</span>&#x000A;        .<span class="ruby-identifier">with_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span>, <span class="ruby-identifier">x</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">i</span>, <span class="ruby-identifier">blks</span>[<span class="ruby-identifier">x</span>]] }&#x000A;        .<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">_a</span>, <span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">nil?</span> }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<h2>Private Class methods</h2>
+<div class='method private-class' id='method-method-c-blk_length'>
+<a name='method-c-blk_length'></a>
+<div class='synopsis'>
+<span class='name'>blk_length</span><span class='arguments'>(arg)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in an <code>arg</code>, allowing for symbols to stand in</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-blk_length-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-blk_length-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 74</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">blk_length</span>(<span class="ruby-identifier">arg</span>)&#x000A;  <span class="ruby-keyword">case</span> <span class="ruby-identifier">arg</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-value">:mifare</span>&#x000A;    <span class="ruby-value">16</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-value">:ntag</span>&#x000A;    <span class="ruby-value">4</span>&#x000A;  <span class="ruby-keyword">when</span> <span class="ruby-operator">-&gt;</span>(<span class="ruby-identifier">b</span>) { <span class="ruby-identifier">b</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Integer</span>) }&#x000A;    <span class="ruby-identifier">arg</span>&#x000A;  <span class="ruby-keyword">end</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method private-class' id='method-method-c-identify_2d_array'>
+<a name='method-c-identify_2d_array'></a>
+<div class='synopsis'>
+<span class='name'>identify_2d_array</span><span class='arguments'>(arry)</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in an <code>arry</code> and determines whether it is a [1, n] length array</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-identify_2d_array-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-identify_2d_array-source'><span class="ruby-comment"># File lib/taptag/encoder.rb, line 86</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">identify_2d_array</span>(<span class="ruby-identifier">arry</span>)&#x000A;  <span class="ruby-identifier">arry</span>.<span class="ruby-identifier">all?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) } <span class="ruby-operator">&amp;&amp;</span>&#x000A;    <span class="ruby-identifier">arry</span>.<span class="ruby-identifier">all?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span> } <span class="ruby-operator">&amp;&amp;</span>&#x000A;    <span class="ruby-identifier">arry</span>.<span class="ruby-identifier">all?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Integer</span>) }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>

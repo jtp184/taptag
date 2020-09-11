@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+<head>
+<title>Taptag::Encrypter</title>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+<script type='text/javascript'>
+  function popupCode(url) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+  
+  function toggleCode(id) {
+    var code = document.getElementById(id)
+  
+    code.style.display = code.style.display != 'block' ? 'block' : 'none'
+    return true
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+</script>
+</head>
+<body class='page'>
+<div class='class' id='wrapper'>
+<div class='header'>
+<h1 class='name'><span class='type'>module</span>
+Taptag::Encrypter
+</h1>
+<ol class='paths'>
+<li>
+<a href="../../files/lib/taptag/encrypter_rb.html">lib/taptag/encrypter.rb</a>
+</li>
+</ol>
+</div>
+<div id='content'>
+<div id='text'>
+<div id='description'>
+<p>Handles encrypting and decrypting data using OpenSSL algorithms</p>
+</div>
+<div id='method-list'>
+<h2>Methods</h2>
+<h3>Public Class</h3>
+<ol>
+<li><a href="#method-c-decrypt">decrypt</a></li>
+<li><a href="#method-c-encrypt">encrypt</a></li>
+</ol>
+</div>
+<div id='context'>
+</div>
+<div id='section'>
+<div id='methods'>
+<h2>Public Class methods</h2>
+<div class='method public-class' id='method-method-c-decrypt'>
+<a name='method-c-decrypt'></a>
+<div class='synopsis'>
+<span class='name'>decrypt</span><span class='arguments'>(args = {})</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in <code>args</code> for the key, vector, algorithm and data, and returns the decrypted string</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-decrypt-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-decrypt-source'><span class="ruby-comment"># File lib/taptag/encrypter.rb, line 22</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">decrypt</span>(<span class="ruby-identifier">args</span> = {})&#x000A;  <span class="ruby-identifier">dc</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">Cipher</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">args</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:algorithm</span>, <span class="ruby-string">&#39;AES-128-CBC&#39;</span>))&#x000A;  <span class="ruby-identifier">dc</span>.<span class="ruby-identifier">decrypt</span>&#x000A;  <span class="ruby-identifier">dc</span>.<span class="ruby-identifier">key</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:key</span>)&#x000A;  <span class="ruby-identifier">dc</span>.<span class="ruby-identifier">iv</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:vector</span>)&#x000A;&#x000A;  <span class="ruby-identifier">dc</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">args</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:data</span>)) <span class="ruby-operator">+</span> <span class="ruby-identifier">dc</span>.<span class="ruby-identifier">final</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+<div class='method public-class' id='method-method-c-encrypt'>
+<a name='method-c-encrypt'></a>
+<div class='synopsis'>
+<span class='name'>encrypt</span><span class='arguments'>(str, args = {})</span>
+
+</div>
+<div class='description'>
+
+<p>Takes in a string <code>str</code> and optional <code>algorithm</code> and returns a hash with the key, vector, and encrypted data</p>
+
+</div>
+<div class='source'>
+<a class='source-toggle' href='#' onclick='toggleCode(&#39;method-c-encrypt-source&#39;); return false'>
+[show source]
+</a>
+<pre id='method-c-encrypt-source'><span class="ruby-comment"># File lib/taptag/encrypter.rb, line 9</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">encrypt</span>(<span class="ruby-identifier">str</span>, <span class="ruby-identifier">args</span> = {})&#x000A;  <span class="ruby-identifier">ec</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">Cipher</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">args</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:algorithm</span>, <span class="ruby-string">&#39;AES-128-CBC&#39;</span>))&#x000A;  <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">encrypt</span>&#x000A;&#x000A;  <span class="ruby-identifier">key</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-value">:key</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">key</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">:key</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">random_key</span>&#x000A;  <span class="ruby-identifier">vector</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">key?</span>(<span class="ruby-value">:vector</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">key</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">:vector</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">random_iv</span>&#x000A;&#x000A;  <span class="ruby-identifier">data</span> = <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">str</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">ec</span>.<span class="ruby-identifier">final</span>&#x000A;&#x000A;  { <span class="ruby-value">key:</span> <span class="ruby-identifier">key</span>, <span class="ruby-value">vector:</span> <span class="ruby-identifier">vector</span>, <span class="ruby-value">data:</span> <span class="ruby-identifier">data</span> }&#x000A;<span class="ruby-keyword">end</span></pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id='footer-push'></div>
+</div>
+<div id='footer'>
+<a href="https://github.com/rdoc/hanna-nouveau"><strong>Hanna Nouveau</strong> RDoc template</a>
+</div>
+</body>
+</html>
