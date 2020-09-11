@@ -1,7 +1,7 @@
 require_relative 'lib/taptag/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'Taptag'
+  spec.name          = 'taptag'
   spec.version       = Taptag::VERSION
   spec.authors       = ['Justin Piotroski']
   spec.email         = ['justin.piotroski@gmail.com']
