@@ -35,7 +35,7 @@ All methods and classes are RDoc documented at https://jtp184.github.io/taptag/
 The `NFC` class is the high level interface to the reader. It can be used to get uids, and read from and write to NFC tags, for both Mifare and NTag cards.
 
 ```ruby
-Taptag::NFC.get_firmware # => [1, 6, 7]
+Taptag::NFC.firmware_version # => [1, 6, 7]
 Taptag::NFC.card_uid # => array of uid bytes, or nil if no card is detected
 ```
 
