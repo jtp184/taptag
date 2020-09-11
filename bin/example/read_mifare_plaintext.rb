@@ -62,8 +62,10 @@ dump_spin.run do |spin|
 end
 
 # Unencode and display
-puts TTY::Box.frame(width: 30, height: 10, title: { top_left: 'DATA' }, padding: 1) do
+box = TTY::Box.frame(width: 30, height: 10, title: { top_left: 'DATA' }, padding: 1) do
   Taptag::Encoder[bytes]
 end
+
+puts box
 
 exit
