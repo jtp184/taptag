@@ -75,7 +75,7 @@ encrypted_string = encrypted_data[:data]
     store_loc = prompt.ask("Where to store #{msig} file?", default: './')
     fname = "#{msig}_#{cuid.map(&format_bytes).join}.bin"
 
-    File.open(store_loc + fname, 'w+b') do |f|
+    File.open(store_loc + fname, 'w+') do |f|
       f << encrypted_data[msig]
     end
     puts "Saved file #{(store_loc + fname).green}"
@@ -87,7 +87,7 @@ end
 # Encode the encrypted string into blocks
 blocks = Taptag::Encoder[encrypted_string]
 
-# Spinner for card data reading
+# Spinner for card data writing
 dump_spin = spinner['Writing tag...']
 
 # Run the spinner and write the data
