@@ -89,7 +89,7 @@ e = %i[key vector].map.with_index do |msig, x|
              end
 end.to_h
 
-encrypted_string = Taptag::Encoder.reduce_blocks(blocks).map(&:ord).join
+encrypted_string = Taptag::Encoder.reduce_blocks(blocks).map(&:chr).join
 
 e[:data] = if info[:key_mtd] == 'block' && info[:vector_mtd] == 'block'
              encrypted_string[32..-1]
