@@ -29,9 +29,9 @@ loop do
 
   cuid.map! do |byte|
     s = byte.to_s(16)
-    s.chars.one? ? "0x0#{s.upcase}" : "0x#{s.upcase}"
+    s.chars.one? ? "0#{s.upcase}" : s.upcase
   end
 
-  puts "[🏷️] #{cuid.inspect}"
+  puts "[🏷️] #{cuid.join(' ')}"
   exit
 end
