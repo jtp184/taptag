@@ -118,10 +118,10 @@ str1 = Taptag::Encoder.decode_string(bytes0) # => "Elfangor-Sirinial-Shamtul"
 frames = Taptag::Encoder.slice_string(bytes0, 16) # => [[69, 108, 102...], [108, 45, 83...]]
 
 # And zip them up with block ids
-blocks = Taptag::Encoder.reduce_blocks(frames, [1, 2])
+blocks = Taptag::Encoder.zip_block(frames, [1, 2]) # => [1, [69...],  2, [108...]]
 
-# Not providing block ids reduces them with the writable mifare blocks by default
-blocks = Taptag::Encoder.reduce_blocks(frames) # => [1, [69...]]
+# Reverse is to reduce them, if you don't provide a filter argument it defaults to mifare blocks
+Taptag::Encoder.reduce_blocks(frames) # => [69, 108...]
 
 # The array is now suitible for passing to the NFC object
 Taptag::NFC.write_mifare_card(blocks)
@@ -135,6 +135,12 @@ bytes2 = Taptag::Encoder.call(bytes0) # => [[69, 108...], [108, 45...]]
 # And is aliased to .[] for ease of use
 
 Taptag::Encoder['Tobias'] # => [1, [84, 111...]]
+
+# The encoder also can return an array of blank blocks
+Taptag::Encoder.blank_blocks # => [1, [0...], 2, [0...]]
+
+# Or customizable repeated frames by passing arguments
+Taptag::Encoder.blank_blocks([1, 2, 4], Array.new(16, 128)) # => [1, [128, 128...], 2, [128, 128...]]
 
 ```
 
