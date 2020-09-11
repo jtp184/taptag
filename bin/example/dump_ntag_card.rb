@@ -29,7 +29,7 @@ byte_colors[0] = :light_black
 # Formats the bytes into hex and colorizes them
 format_bytes = proc do |byte|
   s = byte.to_s(16)
-  s.chars.one? ? "0#{s.upcase}".send(byte_colors[s]) : s.upcase.send(byte_colors[s])
+  s.chars.one? ? "0#{s.upcase}".send(byte_colors[byte]) : s.upcase.send(byte_colors[byte])
 end
 
 # Spinner for card uid acquisition
