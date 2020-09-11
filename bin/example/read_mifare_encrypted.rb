@@ -84,7 +84,8 @@ e = %i[key vector].map.with_index do |msig, x|
 
                File.read(floc)
              when 'block'
-               blocks[Taptag::Encoder.writable_mifare_blocks[x]].map(&:last).map(&:chr).join
+               mf_blks = Taptag::Encoder.writable_mifare_blocks
+               mf_blks[x].last.map(&:chr).join
              end
 end.to_h
 
