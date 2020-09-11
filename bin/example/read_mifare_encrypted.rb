@@ -92,7 +92,7 @@ encrypted_string = Taptag::Encoder.reduce_blocks(blocks).map(&:ord).join
 
 e[:data] = if info[:key_mtd] == 'block' && info[:vector_mtd] == 'block'
              encrypted_string[32..-1]
-           elsif info[:vector_mtd] || info[:key_mtd]
+           elsif info[:vector_mtd] == 'block' || info[:key_mtd] == 'block'
              encrypted_string[16..-1]
            else
              encrypted_string
