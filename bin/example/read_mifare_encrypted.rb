@@ -10,6 +10,7 @@ gemfile do
   gem 'colorize'
   gem 'tty-prompt'
   gem 'tty-spinner'
+  gem 'tty-box'
   gem 'pry'
 end
 
