@@ -24,8 +24,7 @@ module Taptag
 
       # Takes +bytes+ and converts it back into a string
       def decode_string(bytes)
-        bytes.reject(&:zero?)
-             .map(&:chr)
+        bytes.map(&:chr)
              .join
       end
 
