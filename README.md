@@ -146,7 +146,7 @@ Taptag::Encoder.blank_blocks([1, 2, 4], Array.new(16, 128)) # => [1, [128, 128..
 
 ### Encrypter
 
-The `Encrypter` class is a frontend for the stdlib OpenSSL library, allowing you to store you data on tags securely.
+The `Encrypter` class is a frontend for the stdlib OpenSSL library, allowing you to store your data on tags securely.
 
 ```ruby
 str = "Escafil Device"
