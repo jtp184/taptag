@@ -191,6 +191,46 @@ Taptag::Encrypter.decrypt(dc) # => 'Pemalite Crystal'
 
 ```
 
+### PN532
+
+The `PN532` module uses the FFI library to access the C library code provided by waveshare. It holds the library constants, C structs, and attaches the following functions:
+
+- PN532_ReadPassiveTarget: read_passive_target
+- PN532_SamConfiguration: sam_configuration
+- PN532_GetFirmwareVersion: get_firmware_version
+- PN532_MifareClassicAuthenticateBlock: mifare_authenticate_block
+- PN532_MifareClassicReadBlock: mifare_read_block
+- PN532_MifareClassicWriteBlock: mifare_write_block
+- PN532_Ntag2xxReadBlock: ntag_read_block
+- PN532_Ntag2xxWriteBlock: ntag_write_block
+- PN532_SPI_Init: spi_init
+- PN532_SPI_WaitReady: spi_wait_ready
+
+#### PN532Struct
+The `PN532Struct` class is an FFI struct with a layout defined by the C library.
+
+#### DataStruct
+The `DataStruct` class is an FFI struct, with a single element called 'buffer', an array of 255 uint8's. `DataStruct` also has a few ease of use methods
+
+```ruby
+bf = Taptag::PN532::DataBuffer.new
+
+# Converts to a ruby array
+bf.to_a # => [0, 0, 0...]
+
+# And can be accessed directly
+bf[0] # => 0
+
+# You can reset the values
+bf.reset.to_a # => [0, 0...]
+
+# Or set them to a known value
+bf.set([255, 255, 255]).to_a # => [255, 255, 255, 0...]
+
+# You can also get the length excluding zeroes
+bf.nonzero_length # => 3
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/jtp184/taptag
