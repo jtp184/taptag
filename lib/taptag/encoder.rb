@@ -26,6 +26,7 @@ module Taptag
       def decode_string(bytes)
         bytes.map(&:chr)
              .join
+             .gsub(/#{0.chr}*$/, '')
       end
 
       # Takes the +str+ and splits it into +blks+ frames with some shorthand
