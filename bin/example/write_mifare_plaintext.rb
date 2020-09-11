@@ -36,7 +36,11 @@ format_bytes = proc do |byte|
 end
 
 # Request user input
-blocks = Taptag::Encoder.call(prompt.ask('Enter the data to write to the card:'))
+blocks = if ARGV[0] == 'blank'
+           Taptag::Encoder.blank_blocks
+         else
+           Taptag::Encoder.call(prompt.ask('Enter the data to write to the card:'))
+         end
 
 # Spinner for card uid acquisition
 uid_spin = spinner['Waiting for tag...']
