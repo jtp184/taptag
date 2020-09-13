@@ -5,7 +5,7 @@ RSpec.describe 'When mifare card is Present', :mifare do
 
   it 'can get a card uid' do
     u = Taptag::NFC.card_uid
-    expect(u.is_a?(Array) || u.nil?).to be(true)
+    expect(u.is_a?(Array)).to be(true)
   end
 
   it 'can get the type of card from uid length' do
