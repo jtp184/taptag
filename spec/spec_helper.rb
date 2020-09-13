@@ -2,6 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'bundler/setup'
+require 'pry'
 require 'taptag'
 
 RSpec.configure do |config|
