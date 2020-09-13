@@ -31,3 +31,4 @@ RSpec.describe 'When mifare card is Absent', :hardware, :mifare do
 
     expect(e).to be_a(IOError)
   end
+end

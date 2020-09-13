@@ -31,3 +31,4 @@ RSpec.describe 'When ntag card is Absent', :hardware, :ntag do
 
     expect(e).to be_a(IOError)
   end
+end
