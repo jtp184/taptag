@@ -12,7 +12,7 @@ RSpec.describe 'When mifare card is Present', :hardware, :mifare do
     u = Taptag::NFC.card_format
 
     expect(u).to be_a(Symbol)
-    expect(u == :mifare || u == :ntag).to be(true)
+    expect(u).to eq(:mifare)
   end
 
   it 'can authorize mifare blocks' do
@@ -31,12 +31,12 @@ RSpec.describe 'When mifare card is Present', :hardware, :mifare do
     c = Taptag::NFC.read_mifare_card
 
     expect(c).to be_a(Array)
-    expect(c.length).to be(64)
+    expect(c.length).to be(Taptag::PN532::MIFARE_BLOCK_COUNT)
 
     expect(c[0][0]).to be(0)
 
     expect(c[0][1]).to be_a(Array)
-    expect(c[0][1].length).to be(16)
+    expect(c[0][1].length).to be(Taptag::PN532::MIFARE_BLOCK_LENGTH)
   end
 
   it 'can write a single block' do
