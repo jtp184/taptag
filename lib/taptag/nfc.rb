@@ -1,3 +1,7 @@
+require 'taptag/pn532/structs'
+require 'taptag/pn532/library_constants'
+require 'taptag/pn532/pn532'
+
 module Taptag
   # The higher level interface to the hardware, implements reading and writing functions using ruby
   # conventions.

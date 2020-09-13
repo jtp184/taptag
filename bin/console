@@ -3,5 +3,8 @@
 require 'bundler/setup'
 require 'taptag'
 
+require 'taptag/nfc' if File.exist?('/usr/lib/libpn532.so')
+
 require 'pry'
+
 Pry.start
