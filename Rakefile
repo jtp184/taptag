@@ -33,3 +33,9 @@ task :doc_check do
 
   sh "rdoc -C --output=docs --format=hanna --all --main=README.md #{rd_exclude}"
 end
+
+task :reinstall do
+  needs_sudo = Gem.platforms.last.os == 'linux'
+  sh "#{needs_sudo ? 'sudo ' : ''}gem uninstall taptag"
+  sh "#{needs_sudo ? 'sudo ' : ''}rake install"
+end
