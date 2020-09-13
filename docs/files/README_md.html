@@ -30,7 +30,7 @@ README.md
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2020-09-12 17:14:26 -0700</span>
+<span class='datetime'>2020-09-12 18:15:36 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -58,7 +58,7 @@ Last Update:
 
 <h3 id="label-Waveshare+Code">Waveshare Code<span><a href="#label-Waveshare+Code">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<p>The waveshare code is made available in the <code>vendor</code> folder for compiliing on your own system. These C libraries, as well as the <a target="_top" href="http://wiringpi.com/">wiringPi</a> are <em>mandatory</em> runtime dependencies, and the NFC specific parts of the gem will not successfully <code>require</code> without them present in the <code>LD_LIBRARY_PATH</code>. On the pi, this can be achieved by running the <a href="https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps">install_deps</a> script and selecting the “Waveshare NFC Code” option. wiringPi is included by default on Raspbian.</p>
+<p>The waveshare code is made available in the <code>vendor</code> folder for compiliing on your own system. These C libraries, as well as the <a target="_top" href="http://wiringpi.com/">wiringPi</a> library are <em>mandatory</em> runtime dependencies, and the NFC specific parts of the gem will not successfully <code>require</code> without them present in the <code>LD_LIBRARY_PATH</code>. On the pi, this can be achieved by running the <a href="https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps">install_deps</a> script and selecting the “Waveshare NFC Code” option. wiringPi is included by default on Raspbian.</p>
 
 <p>Installing the libraries on the host machine is more difficult. Cross-OS C code compilation is beyond the scope of this gem, but on a linux platform (I use <a href="https://archlinux.org/">arch</a>) you can follow the instructions for compiling <a target="_top" href="http://wiringpi.com/download-and-install/">wiringPi</a> from <a href="https://github.com/WiringPi/WiringPi">source</a>. You can then compile the libraries and add them to your system&#39;s C libraries with</p>
 
