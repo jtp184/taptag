@@ -1,6 +1,6 @@
 module Taptag
   # Handles translating messages to byte frames for writing to devices
-  class Encoder
+  module Encoder
     class << self
       # Master input function, takes in +input+ and optional values for +fmt+ and +blk_filter+
       # and can turn strings into 2d write arrays, 2d arrays into strings,
