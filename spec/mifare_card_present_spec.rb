@@ -16,7 +16,7 @@ RSpec.describe 'When mifare card is Present', :mifare do
   end
 
   it 'can authorize mifare blocks' do
-    a = Taptag::NFC.authorize_mifare_block(6)
+    a = Taptag::NFC.auth_mifare_block(6)
     expect(a).to eq(0)
   end
 
@@ -34,8 +34,8 @@ RSpec.describe 'When mifare card is Present', :mifare do
     expect(c.length).to be(64)
 
     expect(c[0][0]).to be(0)
-    
+
     expect(c[0][1]).to be_a(Array)
-    expect(c[0][1].length).to be(64)
+    expect(c[0][1].length).to be(16)
   end
 end
