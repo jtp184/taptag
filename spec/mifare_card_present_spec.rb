@@ -1,4 +1,4 @@
-RSpec.describe 'When mifare card is Present', :mifare do
+RSpec.describe 'When mifare card is Present', :hardware, :mifare do
   before do
     require 'taptag/nfc'
   end
