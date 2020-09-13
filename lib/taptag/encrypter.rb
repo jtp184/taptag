@@ -11,7 +11,7 @@ module Taptag
         ec.encrypt
 
         key = args.key?(:key) ? ec.key = args[:key] : ec.random_key
-        vector = args.key?(:vector) ? ec.key = args[:vector] : ec.random_iv
+        vector = args.key?(:vector) ? ec.iv = args[:vector] : ec.random_iv
 
         data = ec.update(str) + ec.final
 
