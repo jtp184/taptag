@@ -24,6 +24,24 @@ For help setting up your pi for use with this gem, check out the [RASPI_SETUP](h
 
 This gem was developed using Waveshare's [PN532 NFC HAT](https://www.waveshare.com/wiki/PN532_NFC_HAT) on the Raspberry Pi 3+, and using Mifare and NTag tags purchased online.
 
+### Waveshare Code
+
+The waveshare code is made available in the `vendor` folder for compiliing on your own system. These C libraries, as well as the [wiringPi](http://wiringpi.com/) are *mandatory* runtime dependencies, and the NFC specific parts of the gem will not successfully `require` without them present in the `LD_LIBRARY_PATH`. On the pi, this can be achieved by running the [`install_deps`](https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps) script and selecting the "Waveshare NFC Code" option. wiringPi is included by default on Raspbian.
+
+Installing the libraries on the host machine is more difficult. Cross-OS C code compilation is beyond the scope of this gem, but on a linux platform (I use [arch](https://archlinux.org/)) you can follow the instructions for compiling [wiringPi](http://wiringpi.com/download-and-install/) from [source](https://github.com/WiringPi/WiringPi). You can then compile the libraries and add them to your system's C libraries with
+
+```bash
+cd ./vendor
+gcc -c -Wall -Werror -fpic pn532.c
+gcc -c -Wall -Werror -fpic pn532_rpi.c
+
+gcc -shared -o libpn532.so pn532.o
+gcc -shared -o libpn532_rpi.so pn532_rpi.o
+
+sudo mv lib*.so /usr/lib
+rm *.*o
+```
+
 ## Usage
 
 ### Documentation
@@ -32,9 +50,11 @@ All methods and classes are RDoc documented at https://jtp184.github.io/taptag/
 
 ### NFC
 
-The `NFC` class is the high level interface to the reader. It can be used to get uids, and read from and write to NFC tags, for both Mifare and NTag cards.
+The `NFC` class is the high level interface to the reader. It can be used to get uids, and read from and write to NFC tags, for both Mifare and NTag cards. It requires the C libraries and wiringPi, and is not required by default for ease of development.
 
 ```ruby
+require 'taptag/nfc'
+
 Taptag::NFC.firmware_version # => [1, 6, 7]
 Taptag::NFC.card_uid # => array of uid bytes, or nil if no card is detected
 ```
@@ -44,6 +64,8 @@ Taptag::NFC.card_uid # => array of uid bytes, or nil if no card is detected
 Taptag gives you fine control over read functions, with sensible defaults
 
 ```ruby
+require 'taptag/nfc'
+
 # Mifare blocks need to be authorized for reading, using their uid and a key
 cid = Taptag::NFC.card_uid
 ky = Taptag::PN532::MIFARE_DEFAULT_KEY # Needs to be a FFI::Struct
@@ -71,6 +93,8 @@ Taptag::NFC.read_mifare_card([6, 12, 22]).length # => 3
 Write functions are similarly simple
 
 ```ruby
+require 'taptag/nfc'
+
 # Mifare writes need to be authorized, which is handled like reads, so you can simply do
 Taptag::NFC.write_mifare_block(6, Array.new(16, &:itself))
 
@@ -91,6 +115,8 @@ Taptag::NFC.write_mifare_card(blks) # You can also pass card_uid and key
 NTag cards are very similar, except they don't have an auth step
 
 ```ruby
+require 'taptag/nfc'
+
 # Read a single block
 Taptag::NFC.read_ntag_block(15) # => [69, 114, 101, 107]
 
@@ -199,7 +225,7 @@ Taptag::Encrypter.decrypt(dc) # => 'Pemalite Crystal'
 
 ### PN532
 
-The `PN532` module uses the FFI library to access the C library code provided by waveshare. It holds the library constants, C structs, and attaches the following functions:
+The `PN532` module uses the FFI library to access the C library code provided by waveshare. It's required by the `NFC` class, and holds the library constants, C structs, and attaches the following functions:
 
 - `PN532_ReadPassiveTarget` as `read_passive_target`
 - `PN532_SamConfiguration` as `sam_configuration`
@@ -219,6 +245,8 @@ The `PN532Struct` class is an FFI struct with a layout defined by the C library.
 The `DataStruct` class is an FFI struct, with a single element called 'buffer', an array of 255 uint8's. `DataStruct` also has a few ease of use methods
 
 ```ruby
+require 'taptag/pn532/structs'
+
 bf = Taptag::PN532::DataBuffer.new
 
 # Converts to a ruby array
