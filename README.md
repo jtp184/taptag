@@ -26,7 +26,7 @@ This gem was developed using Waveshare's [PN532 NFC HAT](https://www.waveshare.c
 
 ### Waveshare Code
 
-The waveshare code is made available in the `vendor` folder for compiliing on your own system. These C libraries, as well as the [wiringPi](http://wiringpi.com/) are *mandatory* runtime dependencies, and the NFC specific parts of the gem will not successfully `require` without them present in the `LD_LIBRARY_PATH`. On the pi, this can be achieved by running the [`install_deps`](https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps) script and selecting the "Waveshare NFC Code" option. wiringPi is included by default on Raspbian.
+The waveshare code is made available in the `vendor` folder for compiliing on your own system. These C libraries, as well as the [wiringPi](http://wiringpi.com/) library are *mandatory* runtime dependencies, and the NFC specific parts of the gem will not successfully `require` without them present in the `LD_LIBRARY_PATH`. On the pi, this can be achieved by running the [`install_deps`](https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps) script and selecting the "Waveshare NFC Code" option. wiringPi is included by default on Raspbian.
 
 Installing the libraries on the host machine is more difficult. Cross-OS C code compilation is beyond the scope of this gem, but on a linux platform (I use [arch](https://archlinux.org/)) you can follow the instructions for compiling [wiringPi](http://wiringpi.com/download-and-install/) from [source](https://github.com/WiringPi/WiringPi). You can then compile the libraries and add them to your system's C libraries with
 
