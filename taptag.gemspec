@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'ffi', '~> 1.13.1'
   spec.add_runtime_dependency 'openssl', '~> 2.1.2'
   spec.add_development_dependency 'pry', '~> 0.13.1'
+  spec.add_development_dependency 'simplecov', '~> 0.19.0'
 end
