@@ -38,4 +38,21 @@ RSpec.describe 'When mifare card is Present', :mifare do
     expect(c[0][1]).to be_a(Array)
     expect(c[0][1].length).to be(16)
   end
+
+  it 'can write a single block' do
+    Taptag::NFC.write_mifare_block(6, Array.new(16, 128))
+
+    expect(Taptag::NFC.read_mifare_block(6)).to eq(Array.new(16, 128))
+  end
+
+  it 'can write multiple blocks' do
+    blks = [
+      [5, Array.new(16, 64)],
+      [6, Array.new(16, 128)]
+    ]
+
+    Taptag::NFC.write_mifare_card(blks)
+
+    expect(Taptag::NFC.read_mifare_card([5, 6])).to eq(blks)
+  end
 end
