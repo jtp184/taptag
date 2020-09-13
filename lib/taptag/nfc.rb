@@ -121,7 +121,8 @@ module Taptag
       rescue IOError => e
         raise e unless e.message =~ /ERROR_CONTEXT/
 
-        card_uid
+        raise e unless card_uid
+
         sleep 1
         read_ntag_block(blk)
       end
