@@ -3,7 +3,7 @@ require 'rspec/core/rake_task'
 
 # By default don't assume we have the HAT, just run the tests we need to
 RSpec::Core::RakeTask.new(:test) do |t|
-  t.rspec_opts = '--tag ~@hardware --tag ~@mifare --tag -@ntag'
+  t.rspec_opts = '--tag ~@hardware --tag ~@mifare --tag ~@ntag'
 end
 
 RSpec::Core::RakeTask.new(:test_all)
