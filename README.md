@@ -1,5 +1,7 @@
 # Taptag
 
+![taptag_header](https://justinp-io-production.s3.amazonaws.com/store/835c2d89bbe994dc493af2d34a00b877.gif)
+
 Taptag is a gem for interacting with Waveshare's PN532 NFC HAT. It includes methods for reading and writing from mifare and ntag NFC tags, as well as simple mechanisms for storing and retrieving data.
 
 ## Installation
