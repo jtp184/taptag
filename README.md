@@ -132,6 +132,8 @@ Taptag::NFC.read_ntag_card # => [0, [...]...]
 The `Encoder` class translates strings to byte arrays and back again, using `String#ord`. It allows you to easily prepare data to be stored in NFC tags, and decode the data you've stored there.
 
 ```ruby
+require 'taptag/nfc'
+
 str0 = "Elfangor-Sirinial-Shamtul"
 
 # You can turn a string into ordenal codepoints
@@ -198,6 +200,8 @@ Taptag::Encrypter.decrypt(enc0) # => "Escafil Device"
 For examples of storing data on device, check out [the examples](https://github.com/jtp184/taptag/blob/master/bin/example). Here's a simple, albiet insecure workflow
 
 ```ruby
+require 'taptag/nfc'
+
 str = 'Pemalite Crystal'
 
 enc = Taptag::Encrypter.encrypt(str)
