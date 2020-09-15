@@ -33,3 +33,9 @@ Run `bin/pi/changelogin`. This will allow you to change your pi's hostname on th
 Run `bin/pi/install_deps`. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the waveshare libraries on the pi itself.
 
 ![install_deps](https://justinp-io-production.s3.amazonaws.com/store/5621caf464400e85fcd6935f0dad399f.png)
+
+## Hardware Setup
+
+To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches as shown
+
+![board_setup](https://www.waveshare.com/w/upload/e/ea/PN532_NFC_HAT-2.jpg)
