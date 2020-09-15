@@ -20,6 +20,7 @@ prompt = TTY::Prompt.new(
   interrupt: -> { puts 'x'.light_black; puts 'Goodbye'.red; abort }
 )
 
+# Create the spinner factory
 spinner = proc do |str|
   TTY::Spinner.new(
     "[:spinner] #{str}",
@@ -30,6 +31,7 @@ spinner = proc do |str|
   )
 end
 
+# Run RSpec in a subshell, json format for parsing
 rspec = proc do |cmd|
   specs = JSON.parse(`rspec -fj #{cmd}`.split('Coverage')[0])
 
@@ -38,6 +40,7 @@ rspec = proc do |cmd|
   end.to_h
 end
 
+# Test scenario choices
 test_options = {
   software: 'Software-only tests',
   typeless: 'Tag-type independent hardware tests',
@@ -47,6 +50,7 @@ test_options = {
   ntag_absent: 'Ntag card (absent)'
 }
 
+# Ask for which tasks to run
 tasks = prompt.multi_select('What test groups to run?', test_options.values)
               .map { |t| test_options.key(t) }
 
@@ -112,6 +116,7 @@ else
   exit_with = :abort
 end
 
+# Offer to show test outcomes
 if prompt.yes?('Inspect results?')
   tst = test_results.map do |k, v|
     "#{k.cyan}\n\t#{v ? 'Passed'.green : 'Failed'.red}"

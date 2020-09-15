@@ -265,6 +265,10 @@ bf.set([255, 255, 255]).to_a # => [255, 255, 255, 0...]
 bf.nonzero_length # => 3
 ```
 
+## Testing
+
+Programs that deal with external requirements are [troublesome](https://eev.ee/blog/2016/08/22/testing-for-people-who-hate-testing/#troublesome-cases) to test. Testing taptag thoroughly requires physical setup, so a test runner is included which prompts the user for cues like adding / removing a tag from the NFC HAT. 
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/jtp184/taptag
