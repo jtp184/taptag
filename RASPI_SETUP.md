@@ -32,7 +32,7 @@ Run `bin/pi/changelogin`. This will allow you to change your pi's hostname on th
 
 Run `bin/pi/install_deps`. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the waveshare libraries on the pi itself.
 
-![install_deps](https://justinp-io-production.s3.amazonaws.com/store/5621caf464400e85fcd6935f0dad399f.png)
+![install_deps](https://justinp-io-production.s3.amazonaws.com/store/a2dc20e678ae2d9614f4b64f5ea90f9e.png)
 
 ## Hardware Setup
 
