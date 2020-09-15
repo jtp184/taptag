@@ -59,34 +59,42 @@ test_results.merge!(rspec['--tag ~@hardware']) if tasks.include?(:software)
 test_results.merge!(rspec['--tag ~@ntag --tag ~@mifare']) if tasks.include?(:typeless)
 
 if tasks.include?(:mifare_present)
+  spin.pause
   puts 'Please place a mifare card on the NFC hat and do not remove it until prompted'.yellow
   puts 'Press enter to continue...'.light_black
   gets
 
+  spin.resume
   test_results.merge! rspec['spec/mifare_card_present.spec']
 end
 
 if tasks.include?(:mifare_absent)
+  spin.pause
   puts 'Please ensure there is NOT a card on the NFC hat'.yellow
   puts 'Press enter to continue...'.light_black
   gets
 
+  spin.resume
   test_results.merge! rspec['spec/mifare_card_absent.spec']
 end
 
 if tasks.include?(:ntag_present)
+  spin.pause
   puts 'Please place a ntag card on the NFC hat and do not remove it until prompted'.yellow
   puts 'Press enter to continue...'.light_black
   gets
 
+  spin.resume
   test_results.merge! rspec['spec/ntag_card_present.spec']
 end
 
 if tasks.include?(:ntag_absent)
+  spin.pause
   puts 'Please ensure there is NOT a card on the NFC hat'.yellow
   puts 'Press enter to continue...'.light_black
   gets
 
+  spin.resume
   test_results.merge! rspec['spec/ntag_card_absent.spec']
 end
 
