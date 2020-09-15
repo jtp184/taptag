@@ -267,7 +267,7 @@ bf.nonzero_length # => 3
 
 ## Testing
 
-Programs that deal with external requirements are [troublesome](https://eev.ee/blog/2016/08/22/testing-for-people-who-hate-testing/#troublesome-cases) to test. Testing taptag thoroughly requires physical setup, so a test runner is included which prompts the user for cues like adding / removing a tag from the NFC HAT. 
+Programs that deal with external requirements are [troublesome](https://eev.ee/blog/2016/08/22/testing-for-people-who-hate-testing/#troublesome-cases) to test. Testing taptag thoroughly requires physical setup, and needs to be run on the actual hardware, so a test runner is included which prompts the user for cues like adding / removing a tag from the NFC HAT and runs the extended tests. You can run it by navigating to the base folder, and running `spec/test_runner.rb` to select the test scenarios to run. The tests are standard RSpec examples, and can be run independently instead if desired.
 
 ## Contributing
 
