@@ -70,7 +70,7 @@ if tasks.include?(:mifare_present)
   gets
 
   spin.resume
-  test_results.merge! rspec['spec/mifare_card_present.spec']
+  test_results.merge! rspec['spec/mifare_card_present.rb']
 end
 
 if tasks.include?(:mifare_absent)
@@ -81,7 +81,7 @@ if tasks.include?(:mifare_absent)
   gets
 
   spin.resume
-  test_results.merge! rspec['spec/mifare_card_absent.spec']
+  test_results.merge! rspec['spec/mifare_card_absent.rb']
 end
 
 if tasks.include?(:ntag_present)
@@ -92,7 +92,7 @@ if tasks.include?(:ntag_present)
   gets
 
   spin.resume
-  test_results.merge! rspec['spec/ntag_card_present.spec']
+  test_results.merge! rspec['spec/ntag_card_present.rb']
 end
 
 if tasks.include?(:ntag_absent)
@@ -103,7 +103,7 @@ if tasks.include?(:ntag_absent)
   gets
 
   spin.resume
-  test_results.merge! rspec['spec/ntag_card_absent.spec']
+  test_results.merge! rspec['spec/ntag_card_absent.rb']
 end
 
 spin.success('...Done!')
