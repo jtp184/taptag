@@ -1,4 +1,4 @@
-Tue, 15 Sep 2020 00:18:48 -0700
+Tue, 15 Sep 2020 00:45:05 -0700
 ./bin/example/dump_mifare_card.rb	Fri, 11 Sep 2020 01:31:55 -0700
 ./bin/example/dump_ntag_card.rb	Fri, 11 Sep 2020 01:31:55 -0700
 ./bin/example/read_card_uid.rb	Fri, 11 Sep 2020 01:31:55 -0700
@@ -51,7 +51,7 @@ Tue, 15 Sep 2020 00:18:48 -0700
 ./lib/taptag/version.rb	Wed, 09 Sep 2020 02:02:14 -0700
 ./lib/taptag.rb	Mon, 14 Sep 2020 17:12:57 -0700
 ./RASPI_SETUP.md	Mon, 14 Sep 2020 17:12:57 -0700
-./README.md	Mon, 14 Sep 2020 23:56:11 -0700
+./README.md	Tue, 15 Sep 2020 00:45:00 -0700
 ./vendor/pn532.c	Thu, 10 Sep 2020 02:36:31 -0700
 ./vendor/pn532.h	Thu, 10 Sep 2020 02:36:31 -0700
 ./vendor/pn532_rpi.c	Thu, 10 Sep 2020 02:36:31 -0700
