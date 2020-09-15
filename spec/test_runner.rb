@@ -10,6 +10,7 @@ gemfile do
 
   gem 'colorize'
   gem 'tty-prompt'
+  gem 'tty-spinner'
   gem 'tty-pager'
   gem 'pry'
 end
@@ -18,6 +19,16 @@ end
 prompt = TTY::Prompt.new(
   interrupt: -> { puts 'x'.light_black; puts 'Goodbye'.red; abort }
 )
+
+spinner = proc do |str|
+  TTY::Spinner.new(
+    "[:spinner] #{str}",
+    success_mark: '✅',
+    error_mark: '❗️',
+    frames: '🕒🕓🕔🕕🕖🕗🕘🕙🕚🕛🕐🕑',
+    interval: 12
+  )
+end
 
 rspec = proc do |cmd|
   specs = JSON.parse(`rspec -fj #{cmd}`.split('Coverage')[0])
@@ -40,6 +51,9 @@ tasks = prompt.multi_select('What test groups to run?', test_options.values)
               .map { |t| test_options.key(t) }
 
 test_results = {}
+
+spin = spinner['Running Tests...']
+spin.auto_spin
 
 test_results.merge!(rspec['--tag ~@hardware']) if tasks.include?(:software)
 test_results.merge!(rspec['--tag ~@ntag --tag ~@mifare']) if tasks.include?(:typeless)
@@ -75,6 +89,8 @@ if tasks.include?(:ntag_absent)
 
   test_results.merge! rspec['spec/ntag_card_absent.spec']
 end
+
+spin.success('...Done!')
 
 if test_results.values.all?(true)
   puts 'All tests have passed!'.green
