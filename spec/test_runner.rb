@@ -42,7 +42,7 @@ tasks = prompt.multi_select('What test groups to run?', test_options.values)
 test_results = {}
 
 test_results.merge!(rspec['--tag ~@hardware']) if tasks.include?(:software)
-test_results.merge!(rspec['--tag ~@ntag ~@mifare']) if tasks.include?(:typeless)
+test_results.merge!(rspec['--tag ~@ntag --tag ~@mifare']) if tasks.include?(:typeless)
 
 if tasks.include?(:mifare_present)
   puts 'Please place a mifare card on the NFC hat and do not remove it until prompted'.yellow
