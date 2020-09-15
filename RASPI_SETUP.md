@@ -36,6 +36,17 @@ Run `bin/pi/install_deps`. You can install various needed dependencies remotely 
 
 ## Hardware Setup
 
-To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches as shown
+To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches
+
+```text
+1. Set L0 to L and L1 to H by jumpers
+
+2. Connect RSTPDN->D20 by jumper
+
+3. Set DIP switch to
+| SCK | MISO | MOSI | NSS | SCL | SDA | RX  | TX  |
+|-------------------------------------------------|
+| ON  | ON   | ON   | ON  | OFF | OFF | OFF | OFF |
+```
 
 ![board_setup](https://www.waveshare.com/w/upload/e/ea/PN532_NFC_HAT-2.jpg)
