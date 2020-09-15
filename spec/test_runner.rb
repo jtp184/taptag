@@ -60,6 +60,7 @@ test_results.merge!(rspec['--tag ~@ntag --tag ~@mifare']) if tasks.include?(:typ
 
 if tasks.include?(:mifare_present)
   spin.pause
+  puts
   puts 'Please place a mifare card on the NFC hat and do not remove it until prompted'.yellow
   puts 'Press enter to continue...'.light_black
   gets
@@ -70,6 +71,7 @@ end
 
 if tasks.include?(:mifare_absent)
   spin.pause
+  puts
   puts 'Please ensure there is NOT a card on the NFC hat'.yellow
   puts 'Press enter to continue...'.light_black
   gets
@@ -80,6 +82,7 @@ end
 
 if tasks.include?(:ntag_present)
   spin.pause
+  puts
   puts 'Please place a ntag card on the NFC hat and do not remove it until prompted'.yellow
   puts 'Press enter to continue...'.light_black
   gets
@@ -90,6 +93,7 @@ end
 
 if tasks.include?(:ntag_absent)
   spin.pause
+  puts
   puts 'Please ensure there is NOT a card on the NFC hat'.yellow
   puts 'Press enter to continue...'.light_black
   gets
