@@ -30,7 +30,7 @@ README.md
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2020-09-12 18:15:36 -0700</span>
+<span class='datetime'>2020-09-14 23:53:34 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -142,6 +142,10 @@ Last Update:
 <p>The <code>DataStruct</code> class is an FFI struct, with a single element called &#39;buffer&#39;, an array of 255 uint8&#39;s. <code>DataStruct</code> also has a few ease of use methods</p>
 
 <pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;taptag/pn532/structs&#39;</span>&#x000A;&#x000A;<span class="ruby-identifier">bf</span> = <span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">PN532</span><span class="ruby-operator">::</span><span class="ruby-constant">DataBuffer</span>.<span class="ruby-identifier">new</span>&#x000A;&#x000A;<span class="ruby-comment"># Converts to a ruby array</span>&#x000A;<span class="ruby-identifier">bf</span>.<span class="ruby-identifier">to_a</span> <span class="ruby-comment"># =&gt; [0, 0, 0...]</span>&#x000A;&#x000A;<span class="ruby-comment"># And can be accessed directly</span>&#x000A;<span class="ruby-identifier">bf</span>[<span class="ruby-value">0</span>] <span class="ruby-comment"># =&gt; 0</span>&#x000A;&#x000A;<span class="ruby-comment"># You can reset the values</span>&#x000A;<span class="ruby-identifier">bf</span>.<span class="ruby-identifier">reset</span>.<span class="ruby-identifier">to_a</span> <span class="ruby-comment"># =&gt; [0, 0...]</span>&#x000A;&#x000A;<span class="ruby-comment"># Or set them to a known value</span>&#x000A;<span class="ruby-identifier">bf</span>.<span class="ruby-identifier">set</span>([<span class="ruby-value">255</span>, <span class="ruby-value">255</span>, <span class="ruby-value">255</span>]).<span class="ruby-identifier">to_a</span> <span class="ruby-comment"># =&gt; [255, 255, 255, 0...]</span>&#x000A;&#x000A;<span class="ruby-comment"># You can also get the length excluding zeroes</span>&#x000A;<span class="ruby-identifier">bf</span>.<span class="ruby-identifier">nonzero_length</span> <span class="ruby-comment"># =&gt; 3</span></pre>
+
+<h2 id="label-Testing">Testing<span><a href="#label-Testing">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Programs that deal with external requirements are <a href="https://eev.ee/blog/2016/08/22/testing-for-people-who-hate-testing/#troublesome-cases">troublesome</a> to test. Testing taptag thoroughly requires physical setup, so a test runner is included which prompts the user for cues like adding / removing a tag from the NFC HAT.</p>
 
 <h2 id="label-Contributing">Contributing<span><a href="#label-Contributing">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
