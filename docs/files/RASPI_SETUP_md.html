@@ -30,7 +30,7 @@ RASPI_SETUP.md
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2020-09-15 13:49:14 -0700</span>
+<span class='datetime'>2020-09-15 13:54:03 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -74,7 +74,9 @@ Last Update:
 
 <h2 id="label-Hardware+Setup">Hardware Setup<span><a href="#label-Hardware+Setup">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<p>To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches as shown</p>
+<p>To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches</p>
+
+<pre>1. Set L0 to L and L1 to H by jumpers&#x000A;2. Connect RSTPDN-&gt;D20 by jumper&#x000A;&#x000A;3. Set DIP switch to&#x000A;| SCK | MISO | MOSI | NSS | SCL | SDA | RX  | TX  |&#x000A;|-------------------------------------------------|&#x000A;| ON  | ON   | ON   | ON  | OFF | OFF | OFF | OFF |</pre>
 
 <p><img src="https://www.waveshare.com/w/upload/e/ea/PN532_NFC_HAT-2.jpg"></p>
 </div>
