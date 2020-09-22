@@ -2,7 +2,7 @@
 
 ![taptag_header](https://justinp-io-production.s3.amazonaws.com/store/835c2d89bbe994dc493af2d34a00b877.gif)
 
-Taptag is a gem for interacting with Waveshare's PN532 NFC HAT. It includes methods for reading and writing from mifare and ntag NFC tags, as well as simple mechanisms for storing and retrieving data.
+Taptag is a gem for interacting with Waveshare's PN532 NFC HAT. It includes methods for reading and writing from Mifare and Ntag NFC tags, as well as simple mechanisms for storing and retrieving data.
 
 ## Installation
 
@@ -28,7 +28,7 @@ This gem was developed using Waveshare's [PN532 NFC HAT](https://www.waveshare.c
 
 ### Waveshare Code
 
-The waveshare code is made available in the `vendor` folder for compiliing on your own system. These C libraries, as well as the [wiringPi](http://wiringpi.com/) library are *mandatory* runtime dependencies, and the NFC specific parts of the gem will not successfully `require` without them present in the `LD_LIBRARY_PATH`. On the pi, this can be achieved by running the [`install_deps`](https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps) script and selecting the "Waveshare NFC Code" option. wiringPi is included by default on Raspbian.
+The waveshare code is made available in the `vendor` folder for compiling on your own system. These C libraries, as well as the [wiringPi](http://wiringpi.com/) library are *mandatory* runtime dependencies, and the NFC specific parts of the gem will not successfully `require` without them present in the `LD_LIBRARY_PATH`. On the pi, this can be achieved by running the [`install_deps`](https://github.com/jtp184/taptag/blob/master/bin/pi/install_deps) script and selecting the "Waveshare NFC Code" option. wiringPi is included by default on Raspbian.
 
 Installing the libraries on the host machine is more difficult. Cross-OS C code compilation is beyond the scope of this gem, but on a linux platform (I use [arch](https://archlinux.org/)) you can follow the instructions for compiling [wiringPi](http://wiringpi.com/download-and-install/) from [source](https://github.com/WiringPi/WiringPi). You can then compile the libraries and add them to your system's C libraries with
 
@@ -199,7 +199,7 @@ Taptag::Encrypter.encrypt(str, algorithm: 'AES-256-CBC')
 Taptag::Encrypter.decrypt(enc0) # => "Escafil Device"
 ```
 
-For examples of storing data on device, check out [the examples](https://github.com/jtp184/taptag/blob/master/bin/example). Here's a simple, albiet insecure workflow
+For examples of storing data on device, check out [the examples](https://github.com/jtp184/taptag/blob/master/bin/example). Here's a simple, albeit insecure workflow
 
 ```ruby
 require 'taptag/nfc'
@@ -231,7 +231,7 @@ Taptag::Encrypter.decrypt(dc) # => 'Pemalite Crystal'
 
 ### PN532
 
-The `PN532` module uses the FFI library to access the C library code provided by waveshare. It's required by the `NFC` class, and holds the library constants, C structs, and attaches the following functions:
+The `PN532` module uses the FFI library to access the C library code provided by Waveshare. It's required by the `NFC` class, and holds the library constants, C structs, and attaches the following functions:
 
 - `PN532_ReadPassiveTarget` as `read_passive_target`
 - `PN532_SamConfiguration` as `sam_configuration`
