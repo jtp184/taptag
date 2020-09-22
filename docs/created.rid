@@ -1,5 +1,5 @@
-Tue, 15 Sep 2020 13:54:13 -0700
-./RASPI_SETUP.md	Tue, 15 Sep 2020 13:54:03 -0700
+Tue, 22 Sep 2020 13:56:10 -0700
+./RASPI_SETUP.md	Tue, 22 Sep 2020 13:52:17 -0700
 ./bin/example/read_mifare_encrypted.rb	Sat, 12 Sep 2020 15:12:37 -0700
 ./bin/example/read_card_uid.rb	Sat, 12 Sep 2020 15:12:37 -0700
 ./bin/example/write_mifare_encrypted.rb	Sat, 12 Sep 2020 15:12:37 -0700
@@ -13,7 +13,7 @@ Tue, 15 Sep 2020 13:54:13 -0700
 ./bin/pi/install_deps	Sat, 12 Sep 2020 15:12:37 -0700
 ./bin/pi/boot_config	Sat, 12 Sep 2020 15:12:37 -0700
 ./bin/pi/changelogin	Sat, 12 Sep 2020 15:12:37 -0700
-./README.md	Tue, 15 Sep 2020 13:38:23 -0700
+./README.md	Tue, 22 Sep 2020 13:55:27 -0700
 ./lib/taptag/encoder.rb	Sun, 13 Sep 2020 15:28:59 -0700
 ./lib/taptag/version.rb	Sat, 12 Sep 2020 15:12:37 -0700
 ./lib/taptag/nfc.rb	Sun, 13 Sep 2020 16:55:29 -0700
