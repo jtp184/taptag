@@ -30,7 +30,7 @@ RASPI_SETUP.md
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2020-09-15 13:54:03 -0700</span>
+<span class='datetime'>2020-09-22 13:52:17 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -38,7 +38,7 @@ Last Update:
 <div id='description'>
 <h1 id="label-Setting+up+Raspberry+Pi">Setting up Raspberry Pi<span><a href="#label-Setting+up+Raspberry+Pi">&para;</a> <a href="#top">&uarr;</a></span></h1>
 
-<p>This is a simple start guide to setting up Raspberry Pi for use with taptag</p>
+<p>This is a simple start guide to setting up Raspberry Pi for use with <a href="../classes/Taptag.html"><code>Taptag</code></a></p>
 
 <h2 id="label-Flashing">Flashing<span><a href="#label-Flashing">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
@@ -68,7 +68,7 @@ Last Update:
 
 <h2 id="label-Installing+Dependencies">Installing Dependencies<span><a href="#label-Installing+Dependencies">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<p>Run <code>bin/pi/install_deps</code>. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the waveshare libraries on the pi itself.</p>
+<p>Run <code>bin/pi/install_deps</code>. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the Waveshare libraries on the pi itself.</p>
 
 <p><img src="https://justinp-io-production.s3.amazonaws.com/store/a2dc20e678ae2d9614f4b64f5ea90f9e.png"></p>
 
@@ -76,7 +76,7 @@ Last Update:
 
 <p>To configure the NFC HAT for SPI data transfer, configure the jumpers and dip switches</p>
 
-<pre>1. Set L0 to L and L1 to H by jumpers&#x000A;2. Connect RSTPDN-&gt;D20 by jumper&#x000A;&#x000A;3. Set DIP switch to&#x000A;| SCK | MISO | MOSI | NSS | SCL | SDA | RX  | TX  |&#x000A;|-------------------------------------------------|&#x000A;| ON  | ON   | ON   | ON  | OFF | OFF | OFF | OFF |</pre>
+<pre>1. Set L0 to L and L1 to H by jumpers&#x000A;2. Connect RSTPDN-&gt;D20 by jumper&#x000A;&#x000A;3. Set DIP switch to&#x000A;&#x000A;| SCK | MISO | MOSI | NSS | SCL | SDA | RX  | TX  |&#x000A;|-------------------------------------------------|&#x000A;| ON  | ON   | ON   | ON  | OFF | OFF | OFF | OFF |</pre>
 
 <p><img src="https://www.waveshare.com/w/upload/e/ea/PN532_NFC_HAT-2.jpg"></p>
 </div>
