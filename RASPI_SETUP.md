@@ -1,6 +1,6 @@
 # Setting up Raspberry Pi
 
-This is a simple start guide to setting up Raspberry Pi for use with taptag
+This is a simple start guide to setting up Raspberry Pi for use with Taptag
 
 ## Flashing
 
@@ -30,7 +30,7 @@ Run `bin/pi/changelogin`. This will allow you to change your pi's hostname on th
 
 ## Installing Dependencies
 
-Run `bin/pi/install_deps`. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the waveshare libraries on the pi itself.
+Run `bin/pi/install_deps`. You can install various needed dependencies remotely with this script, including Ruby, the gem itself, and compiling / installing the Waveshare libraries on the pi itself.
 
 ![install_deps](https://justinp-io-production.s3.amazonaws.com/store/a2dc20e678ae2d9614f4b64f5ea90f9e.png)
 
@@ -44,6 +44,7 @@ To configure the NFC HAT for SPI data transfer, configure the jumpers and dip sw
 2. Connect RSTPDN->D20 by jumper
 
 3. Set DIP switch to
+
 | SCK | MISO | MOSI | NSS | SCL | SDA | RX  | TX  |
 |-------------------------------------------------|
 | ON  | ON   | ON   | ON  | OFF | OFF | OFF | OFF |
