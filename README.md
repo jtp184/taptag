@@ -247,8 +247,8 @@ The `PN532` module uses the FFI library to access the C library code provided by
 #### PN532Struct
 The `PN532Struct` class is an FFI struct with a layout defined by the C library.
 
-#### DataStruct
-The `DataStruct` class is an FFI struct, with a single element called 'buffer', an array of 255 uint8's. `DataStruct` also has a few ease of use methods
+#### DataBuffer
+The `DataBuffer` class is an FFI struct, with a single element called 'buffer', an array of 255 uint8's. `DataBuffer` also has a few ease of use methods
 
 ```ruby
 require 'taptag/pn532/structs'
