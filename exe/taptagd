@@ -22,7 +22,7 @@ module Taptag
 
         File.open(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
 
-        DRb.start_service(args[:uri], Taptag::NFC)
+        DRb.start_service(args[:uri] || 'druby://0.0.0.0:8787', Taptag::NFC)
         DRb.thread.join
       end
 
