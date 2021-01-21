@@ -8,30 +8,37 @@ module Taptag
     ACTIONS = %w[start stop pid active].freeze
     PID_FOLDER = "/run/user/#{`id`.split(/\s+/).map { |s| s.scan(/(\w+)/) }.flatten[1]}".freeze
     PID_FILE_NAME = 'taptagd.pid'.freeze
+    PID_FILE_PATH = "#{PID_FOLDER}/#{PID_FILE_NAME}".freeze
 
     class << self
       def start(args = {})
         Process.daemon
 
-        File.write([PID_FOLDER, PID_FILE_NAME].join('/'), 'w+') { |f| f << Process.pid }
+        Signal.trap('TERM') do
+          FileUtils.rm_f(PID_FILE_PATH)
+        end
+
+        File.write(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
 
         DRb.start_service(args[:uri], Taptag::NFC)
         DRb.thread.join
       end
 
       def stop
-        prid = File.read([PID_FOLDER, PID_FILE_NAME].join('/'))
+        prid = File.read(PID_FILE_PATH)
 
         Process.kill(prid)
       end
 
       def pid
-        File.read([PID_FOLDER, PID_FILE_NAME].join('/'))
+        File.read(PID_FILE_PATH)
       end
 
       def active
-        File.exist?([PID_FOLDER, PID_FILE_NAME].join('/'))
+        File.exist?(PID_FILE_PATH)
       end
     end
   end
 end
+
+puts Taptag::RemoteDaemon.send(ARGV[0].to_sym)
