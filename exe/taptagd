@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'taptag'
+require 'taptag/nfc'
+require 'drb/drb'
+
+module Taptag
+  class RemoteDaemon
+    ACTIONS = %w[start stop pid active].freeze
+    PID_FOLDER = "/run/user/#{`id`.split(/\s+/).map { |s| s.scan(/(\w+)/) }.flatten[1]}".freeze
+    PID_FILE_NAME = 'taptagd.pid'.freeze
+
+    class << self
+      def start(args = {})
+        Process.daemon
+
+        File.write([PID_FOLDER, PID_FILE_NAME].join('/'), 'w+') { |f| f << Process.pid }
+
+        DRb.start_service(args[:uri], Taptag::NFC)
+        DRb.thread.join
+      end
+
+      def stop
+        prid = File.read([PID_FOLDER, PID_FILE_NAME].join('/'))
+
+        Process.kill(prid)
+      end
+
+      def pid
+        File.read([PID_FOLDER, PID_FILE_NAME].join('/'))
+      end
+
+      def active
+        File.exist?([PID_FOLDER, PID_FILE_NAME].join('/'))
+      end
+    end
+  end
+end
