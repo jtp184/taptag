@@ -12,13 +12,15 @@ module Taptag
 
     class << self
       def start(args = {})
+        puts 'Already running' and exit if File.exist?(PID_FILE_PATH)
+
         Process.daemon
 
         Signal.trap('TERM') do
           FileUtils.rm_f(PID_FILE_PATH)
         end
 
-        File.write(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
+        File.open(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
 
         DRb.start_service(args[:uri], Taptag::NFC)
         DRb.thread.join
@@ -41,4 +43,5 @@ module Taptag
   end
 end
 
+puts 'No command given' unless ARGV[0]
 puts Taptag::RemoteDaemon.send(ARGV[0].to_sym)
