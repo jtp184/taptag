@@ -13,7 +13,8 @@ module Taptag
     class << self
       def start(args = {})
         if File.exist?(PID_FILE_PATH)
-          puts 'Already running' and exit
+          puts 'Already running'
+          exit
         else
           daemonize
         end
