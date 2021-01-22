@@ -45,8 +45,8 @@ module Taptag
       private
 
       def daemonize
-        write_pidfile
         Process.daemon
+        write_pidfile
       end
 
       def redirect_output
