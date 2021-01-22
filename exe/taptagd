@@ -6,8 +6,10 @@ require 'daemons'
 
 # An accessible folder to put the pidfile in
 PID_FOLDER = "/run/user/#{`id`.match(/=(\d+)\(/)[1]}".freeze
+# Override url with an env var
 DRB_URI = ENV['DRB_URI'] || 'druby://0.0.0.0:8787'
 
+# Set daemon up
 dameon_args = {
   app_name: 'taptagd',
   dir_mode: :normal,
@@ -15,6 +17,7 @@ dameon_args = {
   multiple: false
 }
 
+# Run the daemon, serving the NFC singleton
 Daemons.run_proc('taptagd', dameon_args) do
   DRb.start_service(DRB_URI, Taptag::NFC)
   DRb.thread.join
