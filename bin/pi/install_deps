@@ -9,6 +9,7 @@ gemfile do
 
   gem 'colorize'
   gem 'tty-prompt'
+  gem 'tty-command'
   gem 'net-ssh'
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
@@ -20,6 +21,15 @@ prompt = TTY::Prompt.new(
 )
 
 @flags = Hash.new(0)
+@os = case RUBY_PLATFORM
+      when /cygwin|mswin|mingw|bccwin|wince|emx/
+        :windows
+      when /darwin/
+        :mac
+      when /linux/
+        pi = File.read('/proc/cpuinfo') =~ /Raspberry Pi/
+        pi ? :raspberrypi : :linux
+      end
 
 OptionParser.new do |opts|
   opts.banner = 'Usage: install_deps [options]'
@@ -119,39 +129,75 @@ if tasks.include?(:taptag)
   cmds << 'cd ~/taptag && sudo rake install'
 end
 
-# Run the commands on the remote device
-Net::SSH.start(host, 'pi') do |ssh|
-  cmds.each do |com|
+# Run the commands here if we're on a pi
+if @os == :raspberrypi
+  cmds.each do |cmd|
     @timer = Time.now
-    ssh.open_channel do |chan|
-      if @flags[:verbose].positive?
-        puts "Running `#{com.yellow}`"
-        puts
-      else
-        print '.'.yellow
-      end
 
-      chan.exec(com) do |ch, success|
-        raise 'Could not execute command' unless success
+    puts "Running #{cmd.yellow}" unless @flags[:verbose] < 1
 
-        # Show output on our device
-        if @flags[:verbose] > 1
-          ch.on_data { |_c, data| $stdout.print data.to_s.light_black }
-          ch.on_extended_data { |_c, _type, data| $stderr.print data.to_s.light_black }
+    begin
+      out, err = command.run(cmd)
+    rescue TTY::Command::ExitError
+      puts 'Could not execute command'.red
+      abort
+    end
+
+    if @flags[:verbose].zero?
+      print '.'.green
+      next
+    end
+
+    msg = [out, err].map { |s| s.light_gray }
+    tim = @durationizer[Time.now - @timer]
+    fin = ['Finished '.green.bold, "(#{tim})"].join
+
+    puts msg if @flags[:verbose] > 1
+    puts fin
+    puts
+  end
+else
+  # Define a proc for channel close callback
+  on_close = proc do
+    tim = @durationizer[Time.now - @timer]
+
+    if @flags[:verbose].positive?
+      puts ['Finished '.green.bold, "(#{tim})"].join
+      puts
+    else
+      print '.'.green
+    end
+  end
+
+  # Define a proc for execution callback
+  on_exec = proc do |ch, success|
+    puts('Could not execute command'.red) && abort unless success
+
+    # Show output on our device
+    if @flags[:verbose] > 1
+      ch.on_data { |_c, data| $stdout.print data.to_s.light_black }
+      ch.on_extended_data { |_c, _type, data| $stderr.print data.to_s.light_black }
+    end
+
+    ch.on_close(&on_close)
+  end
+
+  # Run the commands on the remote device
+  Net::SSH.start(host, 'pi') do |ssh|
+    cmds.each do |com|
+      @timer = Time.now
+
+      ssh.open_channel do |chan|
+        if @flags[:verbose].positive?
+          puts "Running `#{com.yellow}`"
+          puts
+        else
+          print('.'.yellow)
         end
 
-        ch.on_close do
-          tim = @durationizer[Time.now - @timer]
-
-          if @flags[:verbose].positive?
-            puts ['Finished '.green.bold, "(#{tim})"].join
-            puts
-          else
-            print '.'.green
-          end
-        end
-      end
-    end.wait
+        chan.exec(com, &on_exec)
+      end.wait
+    end
   end
 end
 
