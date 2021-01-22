@@ -24,9 +24,9 @@ module Taptag
       end
 
       def stop
-        prid = File.read(PID_FILE_PATH).to_i
+        pid = File.read(PID_FILE_PATH).to_i
 
-        Process.kill('TERM', prid)
+        Process.kill('TERM', pid)
         puts 'Stopped'
       end
 
@@ -55,7 +55,7 @@ module Taptag
       end
 
       def write_pidfile
-        File.open(PID_FILE_PATH, 'w+') { |f| f << DRb.thread.pid }
+        File.open(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
       end
     end
   end
