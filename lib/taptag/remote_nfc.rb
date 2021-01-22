@@ -4,27 +4,47 @@ require 'forwardable'
 module Taptag
   # Access an NFC reader being served over DRb
   class RemoteNFC
-    extend Forwardable
+    class << self
+      extend Forwardable
 
-    def_delegators :drb_object, :method_missing, :respond_to?
+      def_delegators :drb_object, :method_missing, :respond_to?
 
-    def initialize(args = {})
-      args.map do |k, v|
-        instance_variable_set(:"@#{k}", v)
+      def server_uri
+        return @server_uri if @server_uri
+        return @server_uri = ENV['DRB_URL'] if ENV['DRB_URL']
+
+        server_url = File.exist?('.raspi-hostname') ? File.read('.raspi-hostname') : '127.0.0.1'
+        @server_uri = "druby://#{server_url}:#{port}"
       end
-    end
 
-    private
+      def server_uri=(new_uri)
+        @drb_object = nil
+        @server_uri = new_uri
+      end
 
-    def server_uri
-      "druby://#{@url || @ip_address}:#{@port}"
-    end
+      def port
+        @port ||= 8787
+      end
 
-    def drb_object
-      return @drb_object if @drb_object
+      def port=(new_port)
+        @drb_object = nil
+        @port = new_port
+      end
 
-      DRb.start_service
-      @drb_object = DRbObject.new_with_uri(server_uri)
+      private
+
+      def drb_object
+        return @drb_object if @drb_object
+
+        start_service
+        @drb_object = DRbObject.new_with_uri(server_uri)
+      end
+
+      def start_service
+        return if @started
+
+        DRb.start_service
+      end
     end
   end
 end
