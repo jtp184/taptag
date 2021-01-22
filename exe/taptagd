@@ -15,11 +15,10 @@ module Taptag
         if File.exist?(PID_FILE_PATH)
           puts 'Already running'
           exit
-        else
-          daemonize
         end
 
         DRb.start_service(args[:uri] || 'druby://0.0.0.0:8787', Taptag::NFC)
+        daemonize
         DRb.thread.join
       end
 
@@ -38,16 +37,15 @@ module Taptag
         puts File.exist?(PID_FILE_PATH)
       end
 
+      def remove_pidfile
+        FileUtils.rm_f(PID_FILE_PATH)
+      end
+
       private
 
       def daemonize
-        exit if fork
-        Process.setsid
-        exit if fork
-
-        Dir.chdir '/'
-        redirect_output
         write_pidfile
+        Process.daemon
       end
 
       def redirect_output
@@ -58,12 +56,12 @@ module Taptag
       def write_pidfile
         File.open(PID_FILE_PATH, 'w+') { |f| f << DRb.thread.pid }
       end
-
-      def remove_pidfile
-        FileUtils.rm_f(PID_FILE_PATH)
-      end
     end
   end
+end
+
+Signal.trap('TERM') do
+  Taptag::RemoteDaemon.remove_pidfile
 end
 
 puts 'No command given' unless ARGV[0]
