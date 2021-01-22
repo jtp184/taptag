@@ -1,14 +1,9 @@
 require 'drb/drb'
-require 'forwardable'
 
 module Taptag
   # Access an NFC reader being served over DRb
   class RemoteNFC
     class << self
-      extend Forwardable
-
-      def_delegators :drb_object, :method_missing, :respond_to?
-
       def server_uri
         return @server_uri if @server_uri
         return @server_uri = ENV['DRB_URL'] if ENV['DRB_URL']
@@ -29,6 +24,16 @@ module Taptag
       def port=(new_port)
         @drb_object = nil
         @port = new_port
+      end
+
+      def respond_to_missing?(mtd)
+        drb_object.respond_to?(mtd) ? true : super
+      end
+
+      def method_missing(method_name, *args, &blk)
+        super unless drb_object.respond_to?(method_name)
+
+        drb_object.call(method_name, args, &blk)
       end
 
       private
