@@ -27,7 +27,7 @@ module Taptag
       end
 
       def stop
-        prid = File.read(PID_FILE_PATH)
+        prid = File.read(PID_FILE_PATH).to_i
 
         Process.kill("TERM", prid)
       end
