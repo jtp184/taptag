@@ -14,22 +14,21 @@ module Taptag
       def start(args = {})
         puts 'Already running' and exit if File.exist?(PID_FILE_PATH)
 
+        DRb.start_service(args[:uri] || 'druby://0.0.0.0:8787', Taptag::NFC)
+
         Process.daemon
 
-        Signal.trap('TERM') do
-          FileUtils.rm_f(PID_FILE_PATH)
-        end
+        File.open(PID_FILE_PATH, 'w+') { |f| f << DRb.thread.pid }
 
-        File.open(PID_FILE_PATH, 'w+') { |f| f << Process.pid }
-
-        DRb.start_service(args[:uri] || 'druby://0.0.0.0:8787', Taptag::NFC)
         DRb.thread.join
+      ensure
+        FileUtils.rm_f(PID_FILE_PATH)
       end
 
       def stop
         prid = File.read(PID_FILE_PATH).to_i
 
-        Process.kill("TERM", prid)
+        Process.kill('TERM', prid)
       end
 
       def pid
