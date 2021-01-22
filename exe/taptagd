@@ -29,7 +29,7 @@ module Taptag
       def stop
         prid = File.read(PID_FILE_PATH)
 
-        Process.kill(prid)
+        Process.kill("TERM", prid)
       end
 
       def pid
