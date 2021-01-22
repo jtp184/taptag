@@ -33,7 +33,7 @@ module Taptag
       def method_missing(method_name, *args, &blk)
         super unless drb_object.respond_to?(method_name)
 
-        drb_object.call(method_name, args, &blk)
+        drb_object.public_send(method_name, args, &blk)
       end
 
       private
