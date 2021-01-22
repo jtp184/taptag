@@ -7,9 +7,16 @@ module Taptag
       # Reader for the uri, with some defaults
       def server_uri
         return @server_uri if @server_uri
-        return @server_uri = ENV['DRB_URL'] if ENV['DRB_URL']
+        return @server_uri = ENV['DRB_URI'] if ENV['DRB_URI']
 
-        server_url = File.exist?('.raspi-hostname') ? File.read('.raspi-hostname') : '127.0.0.1'
+        server_url = if ENV['DRB_URL']
+                       ENV['DRB_URL']
+                     elsif File.exist?('.raspi-hostname')
+                       File.read('.raspi-hostname')
+                     else
+                       '127.0.0.1'
+                     end
+
         @server_uri = "druby://#{server_url}:#{port}"
       end
 
@@ -21,12 +28,13 @@ module Taptag
 
       # Reader for the port to construct a uri with, defaults to 8787
       def port
-        @port ||= 8787
+        @port ||= ENV['DRB_PORT'] || 8787
       end
 
       # Set the port to +new_port+ and nils the drb object
       def port=(new_port)
         @drb_object = nil
+        @server_uri = nil
         @port = new_port
       end
 
