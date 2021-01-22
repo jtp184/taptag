@@ -2,11 +2,10 @@
 require 'taptag'
 require 'taptag/nfc'
 require 'drb/drb'
-require 'fileutils'
 require 'daemons'
 
-ACTIONS = %w[start stop pid active].freeze
-PID_FOLDER = "/run/user/#{`id`.split(/\s+/).map { |s| s.scan(/(\w+)/) }.flatten[1]}".freeze
+# An accessible folder to put the pidfile in
+PID_FOLDER = "/run/user/#{`id`.match(/=(\d+)\(/)[1]}".freeze
 DRB_URI = ENV['DRB_URI'] || 'druby://0.0.0.0:8787'
 
 dameon_args = {
