@@ -2,6 +2,7 @@
 require 'taptag'
 require 'taptag/nfc'
 require 'drb/drb'
+require 'fileutils'
 
 module Taptag
   class RemoteDaemon
