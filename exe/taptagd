@@ -12,35 +12,59 @@ module Taptag
 
     class << self
       def start(args = {})
-        puts 'Already running' and exit if File.exist?(PID_FILE_PATH)
+        if File.exist?(PID_FILE_PATH)
+          puts 'Already running' and exit
+        else
+          daemonize
+        end
 
         DRb.start_service(args[:uri] || 'druby://0.0.0.0:8787', Taptag::NFC)
-
-        Process.daemon
-
-        File.open(PID_FILE_PATH, 'w+') { |f| f << DRb.thread.pid }
-
         DRb.thread.join
-      ensure
-        FileUtils.rm_f(PID_FILE_PATH)
       end
 
       def stop
         prid = File.read(PID_FILE_PATH).to_i
 
         Process.kill('TERM', prid)
+        puts 'Stopped'
       end
 
       def pid
-        File.read(PID_FILE_PATH)
+        puts File.read(PID_FILE_PATH)
       end
 
       def active
-        File.exist?(PID_FILE_PATH)
+        puts File.exist?(PID_FILE_PATH)
+      end
+
+      private
+
+      def daemonize
+        exit if fork
+        Process.setsid
+        exit if fork
+
+        Dir.chdir '/'
+        redirect_output
+        write_pidfile
+      end
+
+      def redirect_output
+        $stderr.reopen('/dev/null', 'a')
+        $stdout.reopen($stderr)
+      end
+
+      def write_pidfile
+        File.open(PID_FILE_PATH, 'w+') { |f| f << DRb.thread.pid }
+      end
+
+      def remove_pidfile
+        FileUtils.rm_f(PID_FILE_PATH)
       end
     end
   end
 end
 
 puts 'No command given' unless ARGV[0]
-puts Taptag::RemoteDaemon.send(ARGV[0].to_sym)
+
+Taptag::RemoteDaemon.public_send(ARGV[0].to_sym)
