@@ -7,6 +7,11 @@ module Taptag
   # conventions.
   module NFC
     class << self
+      attr_writer :interface_type
+      def interface_type
+        @interface_type || :spi
+      end
+
       # Returns the firmware version reported by the device as a byte array
       def firmware_version
         buffer = PN532::DataBuffer.new
@@ -160,7 +165,7 @@ module Taptag
         return @pn_struct if @pn_struct
 
         @pn_struct = PN532::PN532Struct.new
-        PN532.spi_init(@pn_struct)
+        PN532.send("#{interface_type}_init", @pn_struct)
         PN532.sam_configuration(@pn_struct)
 
         @pn_struct

@@ -30,5 +30,15 @@ module Taptag
                     [:pointer], :void, blocking: true
     attach_function :spi_wait_ready, :PN532_SPI_WaitReady,
                     [:uint32], :bool, blocking: true
+
+    attach_function :i2c_init, :PN532_I2C_Init,
+                    [:pointer], :void, blocking: true
+    attach_function :i2c_wait_ready, :PN532_I2C_WaitReady,
+                    [:uint32], :bool, blocking: true
+
+    attach_function :uart_init, :PN532_UART_Init,
+                    [:pointer], :void, blocking: true
+    attach_function :uart_wait_ready, :PN532_UART_WaitReady,
+                    [:uint32], :bool, blocking: true
   end
 end
