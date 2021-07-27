@@ -7,7 +7,10 @@ module Taptag
   # conventions.
   module NFC
     class << self
+      # Set the interface type, one of :spi, :i2c, or :uart
       attr_writer :interface_type
+
+      # Retrieves the interface type, returning :spi if it is not set
       def interface_type
         @interface_type || :spi
       end
@@ -165,7 +168,7 @@ module Taptag
         return @pn_struct if @pn_struct
 
         @pn_struct = PN532::PN532Struct.new
-        PN532.send("#{interface_type}_init", @pn_struct)
+        PN532.send(:"#{interface_type}_init", @pn_struct)
         PN532.sam_configuration(@pn_struct)
 
         @pn_struct

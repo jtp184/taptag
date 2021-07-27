@@ -30,7 +30,7 @@ README.md
 </div>
 <div class='last-update'>
 Last Update:
-<span class='datetime'>2020-09-22 13:56:56 -0700</span>
+<span class='datetime'>2021-07-26 22:31:52 -0700</span>
 </div>
 </div>
 <div id='content'>
@@ -77,6 +77,12 @@ Last Update:
 <p>The <code>NFC</code> class is the high level interface to the reader. It can be used to get uids, and read from and write to NFC tags, for both Mifare and NTag cards. It requires the C libraries and wiringPi, and is not required by default for ease of development.</p>
 
 <pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;taptag/nfc&#39;</span>&#x000A;&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">firmware_version</span> <span class="ruby-comment"># =&gt; [1, 6, 7]</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">card_uid</span> <span class="ruby-comment"># =&gt; array of uid bytes, or nil if no card is detected</span></pre>
+
+<h3 id="label-Communication+Interface">Communication Interface<span><a href="#label-Communication+Interface">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p><a href="../classes/Taptag.html"><code>Taptag</code></a> defaults to using SPI. To use with I2C or UART:</p>
+
+<pre class="ruby"><span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">interface_type</span> = <span class="ruby-value">:i2c</span>&#x000A;<span class="ruby-comment"># or</span>&#x000A;<span class="ruby-constant">Taptag</span><span class="ruby-operator">::</span><span class="ruby-constant">NFC</span>.<span class="ruby-identifier">interface_type</span> = <span class="ruby-value">:uart</span></pre>
 
 <h4 id="label-Mifare+Cards">Mifare Cards<span><a href="#label-Mifare+Cards">&para;</a> <a href="#top">&uarr;</a></span></h4>
 

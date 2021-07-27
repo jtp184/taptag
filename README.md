@@ -63,13 +63,11 @@ Taptag::NFC.card_uid # => array of uid bytes, or nil if no card is detected
 
 ### Communication Interface
 
-Taptag defaults to using SPI.  To use with I2C or UART:
+Taptag defaults to using SPI. To use with I2C or UART:
 
-```
+```ruby
 Taptag::NFC.interface_type = :i2c
-```
-or
-```
+# or
 Taptag::NFC.interface_type = :uart
 ```
 
