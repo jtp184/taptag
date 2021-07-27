@@ -61,6 +61,18 @@ Taptag::NFC.firmware_version # => [1, 6, 7]
 Taptag::NFC.card_uid # => array of uid bytes, or nil if no card is detected
 ```
 
+### Communication Interface
+
+Taptag defaults to using SPI.  To use with I2C or UART:
+
+```
+Taptag::NFC.interface_type = :i2c
+```
+or
+```
+Taptag::NFC.interface_type = :uart
+```
+
 #### Mifare Cards
 
 Taptag gives you fine control over read functions, with sensible defaults
