@@ -253,6 +253,10 @@ The `PN532` module uses the FFI library to access the C library code provided by
 - `PN532_Ntag2xxWriteBlock` as `ntag_write_block`
 - `PN532_SPI_Init` as `spi_init`
 - `PN532_SPI_WaitReady` as `spi_wait_ready`
+- `PN532_I2C_Init` as `i2c_init`
+- `PN532_I2C_WaitReady` as `i2c_wait_ready`
+- `PN532_UART_Init` as `uart_init`
+- `PN532_UART_WaitReady` as `uart_wait_ready`
 
 #### PN532Struct
 The `PN532Struct` class is an FFI struct with a layout defined by the C library.
